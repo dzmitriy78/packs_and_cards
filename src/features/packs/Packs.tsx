@@ -1,16 +1,21 @@
 import React from 'react';
-import {packsAPI} from "../../main/dal/packsAPI";
+import cl from "./Packs.module.scss";
+import PacksTable from "./PacksTable";
+import PacksTable2 from "./PacksTable2";
+import PackFilter from "./PackFilter";
 
 const Packs = () => {
 
-    const getTC = async () => {
-        const res = await packsAPI.getPacks()
-        console.log(res)
-    }
-    return (
-        <div>
-            <button onClick={getTC}>get</button>
-        </div>
+    return (<>
+            <div className={cl.packsWrapper}>
+                <div className={cl.header}>
+                    <div className={cl.title}>Pack list</div>
+                    <button className={cl.button}>Add new pack</button>
+                </div>
+            </div>
+            <PackFilter/>
+            <PacksTable2/>
+        </>
     )
 }
 

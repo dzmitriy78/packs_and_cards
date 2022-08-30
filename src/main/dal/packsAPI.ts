@@ -7,7 +7,7 @@ const getPacksParams = {
     max: 200,
     sortPacks: "0created",
     page: 1,
-    pageCount: 5
+    pageCount: 500
 }
 const getCardsParams = {
     cardAnswer: "",
@@ -25,7 +25,7 @@ export const packsAPI = {
     getPacks() {
         return instance.get<GetPacksResponseType>('cards/pack', {
             params: getPacksParams
-        })
+        }).then(d => d.data)
     },
     createPacks(data: CreatePacksParamsType) {
         return instance.post<CreatePacksParamsType, AxiosResponse<CreatePacksResponseType>>('cards/pack', data)
@@ -55,7 +55,7 @@ export const cardsAPI = {
     }
 }
 
-type CardPacksType = {
+export type CardPacksType = {
     _id: string
     user_id: string
     user_name: string

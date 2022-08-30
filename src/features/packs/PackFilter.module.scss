@@ -1,0 +1,33 @@
+.filterWrapper {
+  display: flex;
+  justify-content: space-between;
+  margin: 40px;
+
+  .searchBlock {
+    height: 62px;
+  }
+
+  .filterBlock {
+    height: 62px;
+    .filterBtn {
+      height: 50px;
+    }
+  }
+
+  .rangeBlock {
+    height: 62px;
+    font-size: 18px;
+    font-weight: bold;
+  }
+  .searchTitle {
+     font-family: 'Montserrat', sans-serif;
+     font-style: normal;
+     font-weight: 500;
+     font-size: 16px;
+     line-height: 17px;
+     display: flex;
+     align-items: center;
+     color: #000000;
+    margin-bottom: 10px;
+   }
+}
