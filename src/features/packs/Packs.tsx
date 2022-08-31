@@ -1,8 +1,7 @@
 import React from 'react';
 import cl from "./Packs.module.scss";
-import PacksTable from "./PacksTable";
-import PacksTable2 from "./PacksTable2";
 import PackFilter from "./PackFilter";
+import PacksTable from "./PacksTable";
 
 const Packs = () => {
 
@@ -14,7 +13,7 @@ const Packs = () => {
                 </div>
             </div>
             <PackFilter/>
-            <PacksTable2/>
+            <PacksTable/>
         </>
     )
 }

@@ -6,9 +6,15 @@ const SelectButt = (props:SelectButtonProps) => {
     const [value, setValue] = useState<any>('All');
     const options: SelectItemOptionsType = ['My', 'All'];
 
+    const chooseMyPacks = ()=>{
+       if (value === 'All'){
+
+       }
+    }
+
     return (
         <div>
-            <div className="card">
+            <div className="card" onClick={chooseMyPacks}>
                 <SelectButton value={value} options={options} onChange={(e: { value: any; }) => setValue(e.value)} />
             </div>
         </div>

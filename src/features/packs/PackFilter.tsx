@@ -5,6 +5,8 @@ import SliderFilter from "../../utils/SliderFilter";
 import MyInput from "../../utils/MyInput";
 
 const PackFilter = () => {
+
+
     return (
         <div className={cl.filterWrapper}>
             <div className={cl.searchBlock}>
