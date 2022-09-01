@@ -86,13 +86,13 @@ export type CreatePacksResponseType = {
 export type CreatePacksParamsType = {
     cardsPack: {
         name: string
-        path: string
+        path?: string
         grade?: number
         shots?: number
         rating?: number
         deckCover?: string
-        private: boolean
-        type: string
+        private?: boolean
+        type?: string
     }
 }
 type DeletePackResponseType = {

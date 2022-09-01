@@ -5,6 +5,7 @@ import {CardPacksType, GetPacksParamsType} from "../../main/dal/packsAPI";
 import {getPacksTC} from "../../main/bll/packsReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType, DispatchType} from "../../main/bll/store";
+import {Button} from "primereact/button";
 
 
 const PacksTable = () => {
@@ -18,6 +19,16 @@ const PacksTable = () => {
         console.log(cardPacks)
     }, [params])
 
+    const actionBodyTemplate = (rowData: any) => {
+        return (
+            <>
+                <Button icon="pi pi-folder-open" className="p-button-rounded p-button-success mr-2" onClick={() => {}} />
+                <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => {}} />
+                <Button icon="pi pi-trash" className="p-button-rounded p-button-warning" onClick={() => {}} />
+            </>
+        )
+    }
+
     return (
         <div>
             <div className="card">
@@ -25,12 +36,12 @@ const PacksTable = () => {
                     <Column field="name" header="Name"></Column>
                     <Column field="cardsCount" header="Cards"></Column>
                     <Column field="updated" header="Last update"></Column>
-                    <Column field="created" header="Created by"></Column>
-                    <Column field="Actions" header="Actions"></Column>
+                    <Column field="user_name" header="Created by"></Column>
+                    <Column field="Actions" header="Actions" body={actionBodyTemplate}></Column>
                 </DataTable>
             </div>
         </div>
-    );
-};
+    )
+}
 
 export default PacksTable;

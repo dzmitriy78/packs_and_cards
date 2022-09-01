@@ -1,10 +1,17 @@
 import {setIsLoadingAC, SetIsLoadingAT} from "./appReducer";
-import {CardPacksType, GetPacksParamsType, GetPacksResponseType, packsAPI} from "../dal/packsAPI";
+import {
+    CardPacksType,
+    CreatePacksParamsType, CreatePacksResponseType,
+    GetPacksParamsType,
+    GetPacksResponseType,
+    packsAPI
+} from "../dal/packsAPI";
 import {errorHandler} from "../../utils/errorHandler";
 import {ThunkType} from "./store";
 
 
 const SET_PACKS = "packsReducer/SET-PACKS"
+const ADD_PACK = "packsReducer/ADD-PACK"
 const SET_PACKS_PARAMS = "packsReducer/SET-PACKS-PARAMS"
 
 export const setPacks = (data: GetPacksResponseType) => ({
@@ -13,6 +20,10 @@ export const setPacks = (data: GetPacksResponseType) => ({
 }) as const
 export const setPacksParams = (data: GetPacksParamsType) => ({
     type: SET_PACKS_PARAMS,
+    data
+}) as const
+export const addPack = (data: CreatePacksResponseType) => ({
+    type: ADD_PACK,
     data
 }) as const
 
@@ -42,6 +53,11 @@ const packsReducer = (state = packsInitialState, action: PacksReducerAT): packsI
                 ...state,
                 getPacksParams: action.data
             }
+        case ADD_PACK:
+            return {
+                ...state,
+                cardPacks: [action.data.newCardsPack, ...state.cardPacks]
+            }
         default: {
             return state
         }
@@ -61,6 +77,19 @@ export const getPacksTC = (params: GetPacksParamsType): ThunkType => async (disp
         errorHandler(e, dispatch)
     }
 }
+export const addPackTC = (data: CreatePacksParamsType): ThunkType => async (dispatch) => {
+    dispatch(setIsLoadingAC('loading'))
+    try {
+        const res = await packsAPI.createPacks(data)
+        if (res)
+            dispatch(addPack(res.data))
+        dispatch(setIsLoadingAC('succeeded'))
+    } catch (e: any) {
+        errorHandler(e, dispatch)
+    }
+}
+
+
 export const setPacksParamsTC = (data: GetPacksParamsType): ThunkType => (dispatch) => {
     dispatch(setIsLoadingAC('loading'))
     try {
@@ -72,10 +101,11 @@ export const setPacksParamsTC = (data: GetPacksParamsType): ThunkType => (dispat
 }
 
 export type packsInitialStateType = {
-    cardPacks: CardPacksType[] | [],
+    cardPacks: CardPacksType[],
     getPacksParams: GetPacksParamsType
 }
 type setPacksAT = ReturnType<typeof setPacks>
+type addPackAT = ReturnType<typeof addPack>
 type setPacksParamsAT = ReturnType<typeof setPacksParams>
 
-export type PacksReducerAT = setPacksAT | setPacksParamsAT | SetIsLoadingAT
+export type PacksReducerAT = setPacksAT | setPacksParamsAT | SetIsLoadingAT | addPackAT
