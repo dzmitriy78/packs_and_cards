@@ -11,7 +11,7 @@ const PackFilter = () => {
         <div className={cl.filterWrapper}>
             <div className={cl.searchBlock}>
                 <div className={cl.searchTitle}>Search</div>
-                <MyInput typeOf={"search"} placeholder = {""}/>
+                <MyInput typeOf={"search"} placeholder={""}/>
             </div>
             <div className={cl.filterBlock}>
                 <div className={cl.searchTitle}>

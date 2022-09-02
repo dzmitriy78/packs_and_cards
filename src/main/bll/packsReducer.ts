@@ -1,7 +1,8 @@
 import {setIsLoadingAC, SetIsLoadingAT} from "./appReducer";
 import {
     CardPacksType,
-    CreatePacksParamsType, CreatePacksResponseType,
+    CreatePacksParamsType,
+    CreatePacksResponseType,
     GetPacksParamsType,
     GetPacksResponseType,
     packsAPI
@@ -13,6 +14,8 @@ import {ThunkType} from "./store";
 const SET_PACKS = "packsReducer/SET-PACKS"
 const ADD_PACK = "packsReducer/ADD-PACK"
 const SET_PACKS_PARAMS = "packsReducer/SET-PACKS-PARAMS"
+const DELETE_PACK = "packsReducer/DELETE-PACK"
+const UPDATE_PACK = "packsReducer/UPDATE-PACK"
 
 export const setPacks = (data: GetPacksResponseType) => ({
     type: SET_PACKS,
@@ -25,6 +28,14 @@ export const setPacksParams = (data: GetPacksParamsType) => ({
 export const addPack = (data: CreatePacksResponseType) => ({
     type: ADD_PACK,
     data
+}) as const
+export const removePack = (id: string) => ({
+    type: DELETE_PACK,
+    id
+}) as const
+export const updatePackName = (id: string, newName: string) => ({
+    type: UPDATE_PACK,
+    id, newName
 }) as const
 
 const packsInitialState: packsInitialStateType = {
@@ -58,6 +69,16 @@ const packsReducer = (state = packsInitialState, action: PacksReducerAT): packsI
                 ...state,
                 cardPacks: [action.data.newCardsPack, ...state.cardPacks]
             }
+        case DELETE_PACK:
+            return {
+                ...state,
+                cardPacks: state.cardPacks.filter(p => p._id !== action.id)
+            }
+        case UPDATE_PACK:
+            return {
+                ...state,
+                cardPacks: state.cardPacks.map(p => p._id === action.id ? {...p, name: action.newName} : p)
+            }
         default: {
             return state
         }
@@ -88,6 +109,31 @@ export const addPackTC = (data: CreatePacksParamsType): ThunkType => async (disp
         errorHandler(e, dispatch)
     }
 }
+export const deletePackTC = (id: string): ThunkType => async (dispatch) => {
+    dispatch(setIsLoadingAC('loading'))
+    try {
+        const res = await packsAPI.deletePack(id)
+        if (res)
+            dispatch(removePack(id))
+        dispatch(setIsLoadingAC('succeeded'))
+    } catch (e: any) {
+        errorHandler(e, dispatch)
+    }
+}
+export const updatePackTC = (id: string, newName: string): ThunkType => async (dispatch) => {
+    dispatch(setIsLoadingAC('loading'))
+    try {
+        const res = await packsAPI.updatePack({cardsPack: {_id: id, name: newName}})
+        if (res) {
+            console.log(res)
+
+            dispatch(updatePackName(res.data.updatedCardsPack._id, res.data.updatedCardsPack.name))
+        }
+        dispatch(setIsLoadingAC('succeeded'))
+    } catch (e: any) {
+        errorHandler(e, dispatch)
+    }
+}
 
 
 export const setPacksParamsTC = (data: GetPacksParamsType): ThunkType => (dispatch) => {
@@ -106,6 +152,8 @@ export type packsInitialStateType = {
 }
 type setPacksAT = ReturnType<typeof setPacks>
 type addPackAT = ReturnType<typeof addPack>
+type removePackAT = ReturnType<typeof removePack>
+type updatePackAT = ReturnType<typeof updatePackName>
 type setPacksParamsAT = ReturnType<typeof setPacksParams>
 
-export type PacksReducerAT = setPacksAT | setPacksParamsAT | SetIsLoadingAT | addPackAT
+export type PacksReducerAT = setPacksAT | setPacksParamsAT | SetIsLoadingAT | addPackAT | removePackAT | updatePackAT

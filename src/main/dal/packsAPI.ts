@@ -23,10 +23,10 @@ export const packsAPI = {
         return instance.post<CreatePacksParamsType, AxiosResponse<CreatePacksResponseType>>('cards/pack', data)
     },
     deletePack(id: string) {
-        return instance.delete<AxiosResponse<DeletePackResponseType>>(`cards/pack?${id}`)
+        return instance.delete<AxiosResponse<DeletePackResponseType>>(`cards/pack?id=${id}`)
     },
     updatePack(data: UpdatePacksParamsType) {
-        return instance.put<AxiosResponse<UpdatePackResponseType>>(`cards/pack`, data)
+        return instance.put<UpdatePackResponseType>(`cards/pack`, data)
     }
 }
 
@@ -40,7 +40,7 @@ export const cardsAPI = {
         return instance.post<AxiosResponse<CreateCardResponseType>>('cards/card', data)
     },
     deleteCard(id: string) {
-        return instance.delete<AxiosResponse<DeleteCardResponseType>>(`cards/card?${id}`)
+        return instance.delete<AxiosResponse<DeleteCardResponseType>>(`cards/card?id=${id}`)
     },
     updateCard(data: UpdateCardParamsType) {
         return instance.put<AxiosResponse<UpdateCardsResponseType>>("cards/card", data)
