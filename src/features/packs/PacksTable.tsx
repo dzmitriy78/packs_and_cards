@@ -1,22 +1,22 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
-import {CardPacksType, GetPacksParamsType} from "../../main/dal/packsAPI";
-import {deletePackTC, getPacksTC, updatePackTC} from "../../main/bll/packsReducer";
+import {CardPacksType} from "../../main/dal/packsAPI";
+import {deletePackTC, updatePackTC} from "../../main/bll/packsReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType, DispatchType} from "../../main/bll/store";
 import {Button} from "primereact/button";
+import {RequestLoadingType} from "../../main/bll/appReducer";
 
 
 const PacksTable = () => {
 
     const dispatch = useDispatch<DispatchType>()
     const cardPacks = useSelector<AppStoreType, CardPacksType[]>(state => state.packs.cardPacks)
-    const params = useSelector<AppStoreType, GetPacksParamsType>(state => state.packs.getPacksParams)
-
-    useEffect(() => {
-        dispatch(getPacksTC(params))
-    }, [params])
+    const isLoading = useSelector<AppStoreType, RequestLoadingType>(state => state.app.isLoading)
+    const totalCount = useSelector<AppStoreType, number>(state => state.packs.cardPacksTotalCount)
+    const myId = useSelector<AppStoreType, string>(state => state.login.userData._id)
+    const userId = useSelector<AppStoreType, string>(state => state.packs.getPacksParams.user_id)
 
     const onDeletePack = (id: string) => {
         dispatch(deletePackTC(id))
@@ -26,23 +26,37 @@ const PacksTable = () => {
         if (newName)
             dispatch(updatePackTC(id, newName))
     }
-    const actionBodyTemplate = (rowData: { _id: string; }) => {
+    const actionBodyTemplate = (rowData: any) => {
         return (
-            <div>
-                <Button icon="pi pi-folder-open" className="p-button-rounded p-button-success mr-2" onClick={() => {
-                }}/>
-                <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2" onClick={() => {
-                    onUpdatePack(rowData._id)
-                }}/>
-                <Button icon="pi pi-trash" className="p-button-rounded p-button-warning"
-                        onClick={() => onDeletePack(rowData._id)}/>
+            <div style={{width: '14vw', overflow: 'hidden', textAlign: "center"}}>
+                <Button icon="pi pi-folder-open" className="p-button-rounded p-button-success mr-2"
+                        disabled={isLoading === "loading"}
+                        onClick={() => {
+                        }
+                        }/>
+                {
+                    myId === userId
+                        ? <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2"
+                                  disabled={isLoading === "loading"}
+                                  onClick={() => onUpdatePack(rowData._id)
+                                  }/>
+                        : ""
+                }
+                {
+                    myId === userId
+                        ? <Button icon="pi pi-trash" className="p-button-rounded p-button-warning"
+                                  disabled={isLoading === "loading"}
+                                  onClick={() => onDeletePack(rowData._id)
+                                  }/>
+                        : ""
+                }
             </div>
         )
     }
 
-    const bodyTemplate = (rowData: any) => {
+    const nameTemplate = (rowData: any) => {
         return (
-            <div style={{width: '150px', overflow: 'hidden'}}>
+            <div style={{width: '25vw', overflow: 'hidden'}}>
                 {rowData.name}
             </div>
         )
@@ -50,23 +64,46 @@ const PacksTable = () => {
 
     const cardsCountTemplate = (rowData: any) => {
         return (
-            <div style={{width: '100px', overflow: 'hidden'}}>
+            <div style={{width: '5vw', overflow: 'hidden', textAlign: "center"}}>
                 {rowData.cardsCount}
             </div>
         )
     }
-
+    const updatedTemplate = (rowData: any) => {
+        return (
+            <div style={{width: '20vw', overflow: 'hidden', textAlign: "center"}}>
+                {rowData.updated}
+            </div>
+        )
+    }
+    const userNameTemplate = (rowData: any) => {
+        return (
+            <div style={{width: '15vw', overflow: 'hidden', textAlign: "center"}}>
+                {rowData.user_name}
+            </div>
+        )
+    }
+    const paginatorLeft = <Button type="button" icon="pi pi-refresh" className="p-button-text"/>;
+    const paginatorRight = <Button type="button" icon="pi pi-cloud" className="p-button-text"/>;
 
     return (
         <div>
             <div className="card">
-                <DataTable value={cardPacks} paginator rows={5} responsiveLayout="scroll">
-                    <Column field="name" header="Name" body={bodyTemplate} headerStyle={{width: '50px'}}></Column>
-                    <Column field="cardsCount" body={cardsCountTemplate} headerStyle={{width: '100px'}}
+                <DataTable value={cardPacks} paginator responsiveLayout="scroll"
+                           paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
+                           currentPageReportTemplate="Showing {first} to {last} of {totalRecords}" rows={5}
+                           rowsPerPageOptions={[5, 10, 20, 50]}
+                           paginatorLeft={paginatorLeft} paginatorRight={paginatorRight}
+                           totalRecords={totalCount}>
+                    <Column field="name" header="Name" body={nameTemplate}
+                            headerStyle={{width: '25vw'}}></Column>
+                    <Column field="cardsCount" body={cardsCountTemplate} headerStyle={{width: '5vw'}}
                             header="Cards"></Column>
-                    <Column field="updated" header="Last update" headerStyle={{width: '300px'}}></Column>
-                    <Column field="user_name" header="Created by" headerStyle={{width: '150px'}}></Column>
-                    <Column field="Actions" header="Actions" headerStyle={{width: '200px'}}
+                    <Column field="updated" header="Last update" body={updatedTemplate}
+                            headerStyle={{width: '20vw'}}></Column>
+                    <Column field="user_name" header="Created by" body={userNameTemplate}
+                            headerStyle={{width: '15vw'}}></Column>
+                    <Column field="Actions" header="Actions" headerStyle={{width: '14vw'}}
                             body={actionBodyTemplate}></Column>
                 </DataTable>
             </div>

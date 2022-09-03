@@ -1,21 +1,36 @@
-import React, { useState } from 'react';
-import {SelectButton, SelectButtonProps} from 'primereact/selectbutton';
+import React, {useEffect, useState} from 'react';
+import {SelectButton} from 'primereact/selectbutton';
 import {SelectItemOptionsType} from "primereact/selectitem";
+import {useDispatch, useSelector} from "react-redux";
+import {AppStoreType, DispatchType} from "../main/bll/store";
+import {setPacksParamsTC} from "../main/bll/packsReducer";
+import {GetPacksParamsType} from "../main/dal/packsAPI";
+import {RequestLoadingType} from "../main/bll/appReducer";
 
-const SelectButt = (props:SelectButtonProps) => {
-    const [value, setValue] = useState<any>('All');
-    const options: SelectItemOptionsType = ['My', 'All'];
+const SelectButt = () => {
 
-    const chooseMyPacks = ()=>{
-       if (value === 'All'){
+    const dispatch = useDispatch<DispatchType>()
+    const params = useSelector<AppStoreType, GetPacksParamsType>(state => state.packs.getPacksParams)
+    const myId = useSelector<AppStoreType, string>(state => state.login.userData._id)
+    const isLoading = useSelector<AppStoreType, RequestLoadingType>(state => state.app.isLoading)
 
-       }
-    }
+    const [value, setValue] = useState<string>('All')
+    const options: SelectItemOptionsType = ['My', 'All']
+
+    const myParams = {...params, user_id: myId}
+    const allParams = {...params, user_id: ""}
+
+    useEffect(() => {
+        value === "My"
+            ? dispatch(setPacksParamsTC(myParams))
+            : dispatch(setPacksParamsTC(allParams))
+    }, [value])
 
     return (
         <div>
-            <div className="card" onClick={chooseMyPacks}>
-                <SelectButton value={value} options={options} onChange={(e: { value: any; }) => setValue(e.value)} />
+            <div className="card">
+                <SelectButton value={value} disabled={isLoading === "loading"} options={options}
+                              onChange={(e: { value: string }) => setValue(e.value)}/>
             </div>
         </div>
     );

@@ -43,12 +43,19 @@ const packsInitialState: packsInitialStateType = {
     getPacksParams: {
         packName: "",
         min: 0,
-        max: 200,
+        max: 120,
         sortPacks: "0created",
         page: 1,
-        pageCount: 50,
+        pageCount: 10000,
         user_id: /*"62d013204d4a530a949a8238"*/ ""
-    }
+    },
+    page: 0,
+    pageCount: 0,
+    cardPacksTotalCount: 0,
+    minCardsCount: 0,
+    maxCardsCount: 0,
+    token: "",
+    tokenDeathTime: 0
 }
 
 const packsReducer = (state = packsInitialState, action: PacksReducerAT): packsInitialStateType => {
@@ -93,6 +100,7 @@ export const getPacksTC = (params: GetPacksParamsType): ThunkType => async (disp
         const res = await packsAPI.getPacks(params)
         if (res)
             dispatch(setPacks(res.data))
+        console.log(res.data)
         dispatch(setIsLoadingAC('succeeded'))
     } catch (e: any) {
         errorHandler(e, dispatch)
@@ -126,7 +134,6 @@ export const updatePackTC = (id: string, newName: string): ThunkType => async (d
         const res = await packsAPI.updatePack({cardsPack: {_id: id, name: newName}})
         if (res) {
             console.log(res)
-
             dispatch(updatePackName(res.data.updatedCardsPack._id, res.data.updatedCardsPack.name))
         }
         dispatch(setIsLoadingAC('succeeded'))
@@ -134,7 +141,6 @@ export const updatePackTC = (id: string, newName: string): ThunkType => async (d
         errorHandler(e, dispatch)
     }
 }
-
 
 export const setPacksParamsTC = (data: GetPacksParamsType): ThunkType => (dispatch) => {
     dispatch(setIsLoadingAC('loading'))
@@ -148,7 +154,14 @@ export const setPacksParamsTC = (data: GetPacksParamsType): ThunkType => (dispat
 
 export type packsInitialStateType = {
     cardPacks: CardPacksType[],
-    getPacksParams: GetPacksParamsType
+    getPacksParams: GetPacksParamsType,
+    page: number
+    pageCount: number
+    cardPacksTotalCount: number
+    minCardsCount: number
+    maxCardsCount: number
+    token: string
+    tokenDeathTime: number
 }
 type setPacksAT = ReturnType<typeof setPacks>
 type addPackAT = ReturnType<typeof addPack>

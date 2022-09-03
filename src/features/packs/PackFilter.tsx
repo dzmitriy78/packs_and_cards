@@ -2,16 +2,15 @@ import React from 'react';
 import cl from "./PackFilter.module.scss"
 import SelectButt from "../../utils/SelectButton";
 import SliderFilter from "../../utils/SliderFilter";
-import MyInput from "../../utils/MyInput";
+import SearchInput from "../../utils/SearchInput";
 
 const PackFilter = () => {
-
 
     return (
         <div className={cl.filterWrapper}>
             <div className={cl.searchBlock}>
                 <div className={cl.searchTitle}>Search</div>
-                <MyInput typeOf={"search"} placeholder={""}/>
+                <SearchInput/>
             </div>
             <div className={cl.filterBlock}>
                 <div className={cl.searchTitle}>
