@@ -31,13 +31,13 @@ export const packsAPI = {
 }
 
 export const cardsAPI = {
-    getCards() {
-        return instance.get<AxiosResponse<GetCardsResponseType>>("cards/card", {
-            params: getCardsParams
+    getCards(params: GetCardsParamsType) {
+        return instance.get<GetCardsResponseType>("cards/card", {
+            params
         })
     },
     createCard(data: CreateCardsType) {
-        return instance.post<AxiosResponse<CreateCardResponseType>>('cards/card', data)
+        return instance.post<CreateCardResponseType>('cards/card', data)
     },
     deleteCard(id: string) {
         return instance.delete<AxiosResponse<DeleteCardResponseType>>(`cards/card?id=${id}`)
@@ -65,7 +65,6 @@ export type CardPacksType = {
     more_id: string
     __v: number
 }
-
 export type GetPacksParamsType = {
     packName: string
     min: number
@@ -119,7 +118,7 @@ type UpdatePackResponseType = {
     tokenDeathTime: number
 }
 
-type CardsType = {
+export type CardsType = {
     _id: string
     cardsPack_id: string
     user_id: string
@@ -139,7 +138,17 @@ type CardsType = {
     updated: string
     __v: number
 }
-type GetCardsResponseType = {
+export type GetCardsParamsType = {
+    cardAnswer: string
+    cardQuestion: string
+    cardsPack_id: string
+    min: number
+    max: number
+    sortCards: string
+    page: number
+    pageCount: number
+}
+export type GetCardsResponseType = {
     cards: [CardsType]
     packUserId: string
     page: number
@@ -150,22 +159,22 @@ type GetCardsResponseType = {
     token: string
     tokenDeathTime: number
 }
-type CreateCardsType = {
+export type CreateCardsType = {
     card: {
         cardsPack_id: string
         question: string
         answer: string
-        grade: number
-        shots: number
-        rating: number
-        answerImg: string
-        questionImg: string
-        questionVideo: string
-        answerVideo: string
-        type: string
+        grade?: number
+        shots?: number
+        rating?: number
+        answerImg?: string
+        questionImg?: string
+        questionVideo?: string
+        answerVideo?: string
+        type?: string
     }
 }
-type CreateCardResponseType = {
+export type CreateCardResponseType = {
     newCard: CardsType
     token: string
     tokenDeathTime: number

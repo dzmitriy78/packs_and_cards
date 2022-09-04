@@ -27,7 +27,8 @@ const SliderFilter = () => {
             <div className="card" style={{width: 160, display: "flex", justifyContent: "space-between"}}>
                 <span>{value[0]}</span>
                 <div style={{width: 100}}>
-                    <Slider value={value} disabled={isLoading === "loading"} max={120} onChange={(e) => setValue(e.value)} range/>
+                    <Slider value={value} disabled={isLoading === "loading"} max={120}
+                            onChange={(e) => setValue(e.value)} range/>
                 </div>
                 <span>{value[1]}</span>
             </div>

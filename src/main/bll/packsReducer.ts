@@ -46,7 +46,7 @@ const packsInitialState: packsInitialStateType = {
         max: 120,
         sortPacks: "0created",
         page: 1,
-        pageCount: 10000,
+        pageCount: 100,
         user_id: /*"62d013204d4a530a949a8238"*/ ""
     },
     page: 0,
@@ -100,7 +100,6 @@ export const getPacksTC = (params: GetPacksParamsType): ThunkType => async (disp
         const res = await packsAPI.getPacks(params)
         if (res)
             dispatch(setPacks(res.data))
-        console.log(res.data)
         dispatch(setIsLoadingAC('succeeded'))
     } catch (e: any) {
         errorHandler(e, dispatch)
