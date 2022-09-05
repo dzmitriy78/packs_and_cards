@@ -5,23 +5,21 @@ import {
     CreateCardResponseType,
     CreateCardsType,
     GetCardsParamsType,
-    GetCardsResponseType
+    GetCardsResponseType,
+    UpdateCardParamsType
 } from "../dal/packsAPI";
 import {ThunkType} from "./store";
 import {errorHandler} from "../../utils/errorHandler";
 
-
 const SET_CARDS = "cardReducer/SET-CARDS"
 const CREATE_CARD = "cardReducer/CREATE-CARD"
+const DELETE_CARD = "cardReducer/DELETE-CARD"
+const UPDATE_CARD = "cardReducer/UPDATE-CARD"
 
-export const setCards = (data: GetCardsResponseType) => ({
-    type: SET_CARDS,
-    payload: {data}
-}) as const
-export const addCard = (data: CreateCardResponseType) => ({
-    type: CREATE_CARD,
-    data
-}) as const
+export const setCards = (data: GetCardsResponseType) => ({type: SET_CARDS, payload: {data}}) as const
+export const addCard = (data: CreateCardResponseType) => ({type: CREATE_CARD, data}) as const
+export const removeCard = (cardId: string) => ({type: DELETE_CARD, cardId}) as const
+export const renovationCard = (data: CardsType) => ({type: UPDATE_CARD, data}) as const
 
 const cardsInitialState: cardsInitialStateType = {
     getCardParams: {
@@ -58,6 +56,18 @@ const cardsReducer = (state = cardsInitialState, action: CardsReducerAT): cardsI
                 ...state,
                 cards: [action.data.newCard, ...state.cards]
             }
+        case DELETE_CARD:
+            return {
+                ...state,
+                cards: state.cards.filter(c => c._id !== action.cardId)
+            }
+        case UPDATE_CARD:
+            return {
+                ...state,
+                cards: state.cards.map(c => c._id === action.data._id
+                    ? {...c, question: action.data.question, answer: action.data.answer}
+                    : c)
+            }
         default: {
             return state
         }
@@ -86,6 +96,27 @@ export const createCardTC = (data: CreateCardsType): ThunkType => async (dispatc
         errorHandler(e, dispatch)
     }
 }
+export const deleteCardTC = (id: string): ThunkType => async (dispatch) => {
+    dispatch(setIsLoadingAC('loading'))
+    try {
+        await cardsAPI.deleteCard(id)
+        dispatch(removeCard(id))
+        dispatch(setIsLoadingAC('succeeded'))
+    } catch (e) {
+        errorHandler(e, dispatch)
+    }
+}
+export const updateCardTC = (data: UpdateCardParamsType): ThunkType => async (dispatch) => {
+    dispatch(setIsLoadingAC('loading'))
+    try {
+        const res = await cardsAPI.updateCard(data)
+        if (res.data)
+            dispatch(renovationCard(res.data.updatedCard))
+        dispatch(setIsLoadingAC('succeeded'))
+    } catch (e) {
+        errorHandler(e, dispatch)
+    }
+}
 
 export type cardsInitialStateType = {
     getCardParams: GetCardsParamsType
@@ -101,5 +132,7 @@ export type cardsInitialStateType = {
 }
 type setCardsAT = ReturnType<typeof setCards>
 type createCardsAT = ReturnType<typeof addCard>
+type deleteCardsAT = ReturnType<typeof removeCard>
+type renovationCardAT = ReturnType<typeof renovationCard>
 
-export type CardsReducerAT = setCardsAT | SetIsLoadingAT | createCardsAT
+export type CardsReducerAT = setCardsAT | SetIsLoadingAT | createCardsAT | deleteCardsAT | renovationCardAT

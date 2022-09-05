@@ -11,15 +11,15 @@ const Cards = () => {
     const dispatch = useDispatch<DispatchType>()
 
     const isLoading = useSelector<AppStoreType, RequestLoadingType>(state => state.app.isLoading)
-    const cardsPack = useSelector<AppStoreType,CardPacksType[]>(state => state.packs.cardPacks)
+    const cardsPack = useSelector<AppStoreType, CardPacksType[]>(state => state.packs.cardPacks)
     const id = useSelector<AppStoreType, string>(state => state.cards.getCardParams.cardsPack_id)
 
 
     const createCard = () => {
         const question = String(prompt("Enter card question"))
         const answer = String(prompt("Enter card answer"))
-         if (question)
-             dispatch(createCardTC({card:{cardsPack_id: cardsPack[0]._id, question, answer}}))
+        if (question)
+            dispatch(createCardTC({card: {cardsPack_id: cardsPack[0]._id, question, answer}}))
     }
 
     return (<>

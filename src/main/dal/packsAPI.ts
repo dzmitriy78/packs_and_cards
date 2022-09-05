@@ -1,18 +1,6 @@
 import {AxiosResponse} from "axios"
 import {instance} from "./authAPI";
 
-const getCardsParams = {
-    cardAnswer: "",
-    cardQuestion: "",
-    cardsPack_id: "630b326c08095407487d7a75",
-    min: 0,
-    max: 100,
-    sortCards: "0grade",
-    page: 1,
-    pageCount: 7
-}
-
-
 export const packsAPI = {
     getPacks(params: GetPacksParamsType) {
         return instance.get<GetPacksResponseType>('cards/pack', {
@@ -43,7 +31,7 @@ export const cardsAPI = {
         return instance.delete<AxiosResponse<DeleteCardResponseType>>(`cards/card?id=${id}`)
     },
     updateCard(data: UpdateCardParamsType) {
-        return instance.put<AxiosResponse<UpdateCardsResponseType>>("cards/card", data)
+        return instance.put<UpdateCardsResponseType>("cards/card", data)
     }
 }
 
@@ -184,14 +172,15 @@ type DeleteCardResponseType = {
     token: string
     tokenDeathTime: number
 }
-type UpdateCardParamsType = {
+export type UpdateCardParamsType = {
     card: {
         _id: string
         question: string
-        comments: string
+        answer: string
+        comments?: string
     }
 }
-type UpdateCardsResponseType = {
+export type UpdateCardsResponseType = {
     updatedCard: CardsType
     token: string
     tokenDeathTime: number

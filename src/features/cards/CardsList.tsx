@@ -6,6 +6,7 @@ import {RequestLoadingType} from "../../main/bll/appReducer";
 import {Button} from "primereact/button";
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
+import {deleteCardTC, updateCardTC} from "../../main/bll/cardsReducer";
 
 const CardsList = () => {
     const dispatch = useDispatch<DispatchType>()
@@ -15,12 +16,13 @@ const CardsList = () => {
     const userId = useSelector<AppStoreType, string>(state => state.packs.getPacksParams.user_id)
 
     const onDeleteCard = (id: string) => {
-        /*    dispatch(deletePackTC(id))*/
+        dispatch(deleteCardTC(id))
     }
     const onUpdateCard = (id: string) => {
-        /* const newName = String(prompt("Enter a new card name"))
-         if (newName)
-             dispatch(updatePackTC(id, newName))*/
+        const newQuestion = String(prompt("Enter a new question"))
+        const newAnswer = String(prompt("Enter a new answer"))
+        if (newQuestion || newAnswer)
+            dispatch(updateCardTC({card: {_id: id, question: newQuestion, answer: newAnswer}}))
     }
     const actionBodyTemplate = (rowData: any) => {
         return (
