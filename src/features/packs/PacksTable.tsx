@@ -8,7 +8,7 @@ import {AppStoreType, DispatchType} from "../../main/bll/store";
 import {Button} from "primereact/button";
 import {RequestLoadingType} from "../../main/bll/appReducer";
 import {useNavigate} from "react-router-dom";
-import {CARDS_PAGE} from "../../main/Routing";
+import {CARDS_PATH} from "../../main/Routing";
 import {getCardsTC} from "../../main/bll/cardsReducer";
 
 
@@ -39,7 +39,7 @@ const PacksTable = () => {
                         disabled={isLoading === "loading"}
                         onClick={() => {
                             dispatch(getCardsTC({...params, cardsPack_id: rowData._id}))
-                            navigate(CARDS_PAGE)
+                            navigate(CARDS_PATH)
                         }
                         }/>
                 {
@@ -92,8 +92,6 @@ const PacksTable = () => {
             </div>
         )
     }
-    const paginatorLeft = <Button type="button" icon="pi pi-refresh" className="p-button-text"/>;
-    const paginatorRight = <Button type="button" icon="pi pi-cloud" className="p-button-text"/>;
 
     return (
         <div>
@@ -102,7 +100,6 @@ const PacksTable = () => {
                            paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords}" rows={5}
                            rowsPerPageOptions={[5, 10, 20, 50]}
-                           paginatorLeft={paginatorLeft} paginatorRight={paginatorRight}
                            totalRecords={totalCount}>
                     <Column field="name" header="Name" body={nameTemplate}
                             headerStyle={{width: '25vw'}} sortable={true}></Column>

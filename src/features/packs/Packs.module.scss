@@ -1,8 +1,9 @@
 .header {
   position: relative;
   display: flex;
-  justify-content: space-around;
-  margin: 20px 0 20px 0;
+  justify-content: space-between;
+  align-items: center;
+  margin: 30px;
 
   .title {
     width: 107px;
@@ -18,10 +19,6 @@
   }
 
   .button {
-    left: 75.7%;
-    right: 10.62%;
-    top: 11.76%;
-    bottom: 83.82%;
     border: 1px solid #676767;
     background: #14B8A6;
     box-shadow: 0 4px 18px rgb(15, 118, 110), inset 0 1px 0 rgba(255, 255, 255, 0.3);

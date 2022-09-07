@@ -79,8 +79,6 @@ const CardsList = () => {
             </div>
         )
     }
-    const paginatorLeft = <Button type="button" icon="pi pi-refresh" className="p-button-text"/>;
-    const paginatorRight = <Button type="button" icon="pi pi-cloud" className="p-button-text"/>;
 
     return (
         <div>
@@ -88,8 +86,7 @@ const CardsList = () => {
                 <DataTable value={cards} paginator responsiveLayout="scroll"
                            paginatorTemplate="CurrentPageReport FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink RowsPerPageDropdown"
                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords}" rows={5}
-                           rowsPerPageOptions={[5, 10, 20]}
-                           paginatorLeft={paginatorLeft} paginatorRight={paginatorRight}>
+                           rowsPerPageOptions={[5, 10, 20]}>
                     <Column field="question" header="question" body={questionTemplate}
                             headerStyle={{width: '20vw'}} sortable={true}></Column>
                     <Column field="answer" body={answerTemplate} headerStyle={{width: '20vw'}}

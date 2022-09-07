@@ -2,17 +2,23 @@ import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType, DispatchType} from "../../main/bll/store";
 import {RequestLoadingType} from "../../main/bll/appReducer";
-import cl from "../cards/Card.module.scss"
+import cl from "../packs/Packs.module.scss"
 import {createCardTC} from "../../main/bll/cardsReducer";
 import {CardPacksType} from "../../main/dal/packsAPI";
 import CardsList from "./CardsList";
+import {Button} from "primereact/button";
+import {useNavigate} from "react-router-dom";
+import {PACKS_PATH} from "../../main/Routing";
 
 const Cards = () => {
     const dispatch = useDispatch<DispatchType>()
+    const navigate = useNavigate()
 
     const isLoading = useSelector<AppStoreType, RequestLoadingType>(state => state.app.isLoading)
     const cardsPack = useSelector<AppStoreType, CardPacksType[]>(state => state.packs.cardPacks)
     const id = useSelector<AppStoreType, string>(state => state.cards.getCardParams.cardsPack_id)
+    const myId = useSelector<AppStoreType, string>(state => state.login.userData._id)
+    const userId = useSelector<AppStoreType, string>(state => state.packs.getPacksParams.user_id)
 
 
     const createCard = () => {
@@ -23,10 +29,21 @@ const Cards = () => {
     }
 
     return (<>
+
             <div className={cl.header}>
+                <Button type="button" icon="pi pi-arrow-left"
+                        className="p-button-text"
+                        style={{width: "90px"}}
+                        onClick={()=>navigate(PACKS_PATH)}
+                >Back to packs</Button>
                 <div className={cl.title}>{`Pack name: `}</div>
-                <button className={cl.button} disabled={isLoading === "loading"} onClick={createCard}>Add new card
-                </button>
+                {
+                    myId === userId
+                        ? <button className={cl.button} disabled={isLoading === "loading"} onClick={createCard}>+ new
+                            card
+                        </button>
+                        : ""
+                }
             </div>
             <CardsList/>
         </>
