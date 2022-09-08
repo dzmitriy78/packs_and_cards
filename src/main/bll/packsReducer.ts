@@ -46,7 +46,7 @@ const packsInitialState: packsInitialStateType = {
         max: 120,
         sortPacks: "0created",
         page: 1,
-        pageCount: 100,
+        pageCount: 10000,
         user_id: /*"62d013204d4a530a949a8238"*/ ""
     },
     page: 0,

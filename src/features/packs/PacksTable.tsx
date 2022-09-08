@@ -10,6 +10,7 @@ import {RequestLoadingType} from "../../main/bll/appReducer";
 import {useNavigate} from "react-router-dom";
 import {CARDS_PATH} from "../../main/Routing";
 import {getCardsTC} from "../../main/bll/cardsReducer";
+import moment from "moment";
 
 
 const PacksTable = () => {
@@ -80,8 +81,8 @@ const PacksTable = () => {
     }
     const updatedTemplate = (rowData: any) => {
         return (
-            <div style={{width: '20vw', overflow: 'hidden', textAlign: "center"}}>
-                {rowData.updated}
+            <div style={{width: '12vw', overflow: 'hidden', textAlign: "center"}}>
+                {moment(rowData.updated).format("DD.MM.YYYY  HH:mm ")}
             </div>
         )
     }
@@ -105,7 +106,7 @@ const PacksTable = () => {
                             headerStyle={{width: '25vw'}} sortable={true}></Column>
                     <Column field="cardsCount" body={cardsCountTemplate} headerStyle={{width: '5vw'}}
                             header="Cards" sortable={true}></Column>
-                    <Column field="updated" header="Last update" body={updatedTemplate}
+                    <Column field="updated" header="Last updated" body={updatedTemplate}
                             headerStyle={{width: '20vw'}} sortable={true}></Column>
                     <Column field="user_name" header="Created by" body={userNameTemplate}
                             headerStyle={{width: '15vw'}} sortable={true}></Column>

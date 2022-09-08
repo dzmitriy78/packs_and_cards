@@ -28,7 +28,7 @@ const cardsInitialState: cardsInitialStateType = {
         cardsPack_id: /*"630b326c08095407487d7a75"*/"",
         min: 0,
         max: 120,
-        sortCards: "0grade",
+        sortCards: "1grade",
         page: 1,
         pageCount: 120
     },
@@ -80,6 +80,7 @@ export const getCardsTC = (data: GetCardsParamsType): ThunkType => async (dispat
     dispatch(setIsLoadingAC('loading'))
     try {
         const res = await cardsAPI.getCards(data)
+        console.log(res.data)
         dispatch(setCards(res.data))
         dispatch(setIsLoadingAC('succeeded'))
     } catch (e) {

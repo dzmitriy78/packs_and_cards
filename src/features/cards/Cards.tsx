@@ -34,18 +34,19 @@ const Cards = () => {
                 <Button type="button" icon="pi pi-arrow-left"
                         className="p-button-text"
                         style={{width: "90px"}}
-                        onClick={()=>navigate(PACKS_PATH)}
+                        onClick={() => navigate(PACKS_PATH)}
                 >Back to packs</Button>
                 <div className={cl.title}>{`Pack name: `}</div>
                 {
                     myId === userId
-                        ? <button className={cl.button} disabled={isLoading === "loading"} onClick={createCard}>+ new
-                            card
-                        </button>
+                        ? <button className={cl.button}
+                                  disabled={isLoading === "loading"}
+                                  onClick={createCard}>
+                            + new card</button>
                         : ""
                 }
             </div>
-            <CardsList/>
+            {cardsPack && <CardsList/>}
         </>
     )
 }

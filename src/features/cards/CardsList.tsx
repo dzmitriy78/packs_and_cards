@@ -7,6 +7,8 @@ import {Button} from "primereact/button";
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {deleteCardTC, updateCardTC} from "../../main/bll/cardsReducer";
+import RatingStar from "../../utils/RatingStar";
+import moment from "moment";
 
 const CardsList = () => {
     const dispatch = useDispatch<DispatchType>()
@@ -67,15 +69,15 @@ const CardsList = () => {
     }
     const updatedTemplate = (rowData: any) => {
         return (
-            <div style={{width: '20vw', overflow: 'hidden', textAlign: "center"}}>
-                {rowData.updated}
+            <div style={{width: '12vw', overflow: 'hidden', textAlign: "center"}}>
+                {moment(rowData.updated).format("DD.MM.YYYY  HH:mm ")}
             </div>
         )
     }
     const gradeTemplate = (rowData: any) => {
         return (
-            <div style={{width: '8vw', overflow: 'hidden', textAlign: "center"}}>
-                {rowData.grade}
+            <div style={{width: '12vw', overflow: 'hidden', textAlign: "center"}}>
+                <RatingStar grade = {rowData.grade}/>
             </div>
         )
     }
