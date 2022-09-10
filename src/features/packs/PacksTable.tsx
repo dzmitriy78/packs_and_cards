@@ -9,7 +9,7 @@ import {Button} from "primereact/button";
 import {RequestLoadingType} from "../../main/bll/appReducer";
 import {useNavigate} from "react-router-dom";
 import {CARDS_PATH} from "../../main/Routing";
-import {getCardsTC} from "../../main/bll/cardsReducer";
+import {getCardsTC, setCardsPack} from "../../main/bll/cardsReducer";
 import moment from "moment";
 
 
@@ -34,12 +34,14 @@ const PacksTable = () => {
     }
 
     const actionBodyTemplate = (rowData: any) => {
+        const currentPack = cardPacks.filter((c)=>c._id===rowData._id)
         return (
             <div style={{width: '14vw', overflow: 'hidden', textAlign: "center"}}>
                 <Button icon="pi pi-folder-open" className="p-button-rounded p-button-success mr-2"
                         disabled={isLoading === "loading"}
                         onClick={() => {
                             dispatch(getCardsTC({...params, cardsPack_id: rowData._id}))
+                            dispatch(setCardsPack(currentPack[0]))
                             navigate(CARDS_PATH)
                         }
                         }/>

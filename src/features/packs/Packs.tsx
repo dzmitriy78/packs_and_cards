@@ -20,7 +20,7 @@ const Packs = () => {
 
     useEffect(() => {
         dispatch(getPacksTC(params))
-    }, [params])
+    }, [params.packName, params.max, params.min, params.user_id])
 
     const createPack = () => {
         const newPackName = String(prompt("Enter new pack name"))

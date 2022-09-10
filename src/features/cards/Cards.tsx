@@ -16,16 +16,16 @@ const Cards = () => {
 
     const isLoading = useSelector<AppStoreType, RequestLoadingType>(state => state.app.isLoading)
     const cardsPack = useSelector<AppStoreType, CardPacksType[]>(state => state.packs.cardPacks)
-    const id = useSelector<AppStoreType, string>(state => state.cards.getCardParams.cardsPack_id)
     const myId = useSelector<AppStoreType, string>(state => state.login.userData._id)
     const userId = useSelector<AppStoreType, string>(state => state.packs.getPacksParams.user_id)
+    const currentPack = useSelector<AppStoreType,CardPacksType>(state => state.cards.currentCardsPack)
 
 
     const createCard = () => {
         const question = String(prompt("Enter card question"))
         const answer = String(prompt("Enter card answer"))
         if (question)
-            dispatch(createCardTC({card: {cardsPack_id: cardsPack[0]._id, question, answer}}))
+            dispatch(createCardTC({card: {cardsPack_id: currentPack._id, question, answer}}))
     }
 
     return (<>
@@ -36,7 +36,7 @@ const Cards = () => {
                         style={{width: "90px"}}
                         onClick={() => navigate(PACKS_PATH)}
                 >Back to packs</Button>
-                <div className={cl.title}>{`Pack name: `}</div>
+                <div className={cl.title}>{`Pack name: ${currentPack.name}`}</div>
                 {
                     myId === userId
                         ? <button className={cl.button}

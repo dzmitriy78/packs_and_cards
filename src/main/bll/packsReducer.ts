@@ -132,7 +132,6 @@ export const updatePackTC = (id: string, newName: string): ThunkType => async (d
     try {
         const res = await packsAPI.updatePack({cardsPack: {_id: id, name: newName}})
         if (res) {
-            console.log(res)
             dispatch(updatePackName(res.data.updatedCardsPack._id, res.data.updatedCardsPack.name))
         }
         dispatch(setIsLoadingAC('succeeded'))

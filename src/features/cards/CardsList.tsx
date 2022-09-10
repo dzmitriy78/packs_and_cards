@@ -7,8 +7,8 @@ import {Button} from "primereact/button";
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {deleteCardTC, updateCardTC} from "../../main/bll/cardsReducer";
-import RatingStar from "../../utils/RatingStar";
 import moment from "moment";
+import {Rating} from "primereact/rating";
 
 const CardsList = () => {
     const dispatch = useDispatch<DispatchType>()
@@ -26,6 +26,7 @@ const CardsList = () => {
         if (newQuestion || newAnswer)
             dispatch(updateCardTC({card: {_id: id, question: newQuestion, answer: newAnswer}}))
     }
+
     const actionBodyTemplate = (rowData: any) => {
         return (
             <div style={{width: '14vw', overflow: 'hidden', textAlign: "center"}}>
@@ -77,7 +78,7 @@ const CardsList = () => {
     const gradeTemplate = (rowData: any) => {
         return (
             <div style={{width: '12vw', overflow: 'hidden', textAlign: "center"}}>
-                <RatingStar grade = {rowData.grade}/>
+                <Rating value={rowData.grade} readOnly stars={5} cancel={false} />
             </div>
         )
     }
