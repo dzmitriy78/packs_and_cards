@@ -2,7 +2,7 @@ import {setIsLoadingAC, SetIsLoadingAT} from "./appReducer";
 import {
     CardPacksType,
     cardsAPI,
-    CardsType,
+    CardsType, ChangeCardGradeResponse, ChangeGradeType,
     CreateCardResponseType,
     CreateCardsType,
     GetCardsParamsType,
@@ -17,14 +17,16 @@ const CREATE_CARD = "cardReducer/CREATE-CARD"
 const DELETE_CARD = "cardReducer/DELETE-CARD"
 const UPDATE_CARD = "cardReducer/UPDATE-CARD"
 const SET_CARDS_PACK = "cardReducer/SET-CARDS-PACK"
+const UPDATE_GRADE = "cardReducer/UPDATE-GRADE"
 
 export const setCards = (data: GetCardsResponseType) => ({type: SET_CARDS, payload: {data}}) as const
 export const addCard = (data: CreateCardResponseType) => ({type: CREATE_CARD, data}) as const
 export const removeCard = (cardId: string) => ({type: DELETE_CARD, cardId}) as const
 export const renovationCard = (data: CardsType) => ({type: UPDATE_CARD, data}) as const
 export const setCardsPack = (data: CardPacksType) => ({type: SET_CARDS_PACK, payload: {data}}) as const
+export const updateGrade = (data: ChangeCardGradeResponse) => ({type: UPDATE_GRADE, data}) as const
 
-const cardsInitialState: cardsInitialStateType = {
+const cardsInitialState: CardsInitialStateType = {
     getCardParams: {
         cardAnswer: "",
         cardQuestion: "",
@@ -36,24 +38,8 @@ const cardsInitialState: cardsInitialStateType = {
         pageCount: 120
     },
     cards: [],
-    currentCardsPack: {
-        _id: "",
-        user_id: "",
-        user_name: "",
-        private: false,
-        name: "",
-        path: "",
-        grade: 0,
-        shots: 0,
-        deckCover: "",
-        cardsCount: 0,
-        type: "",
-        rating: 0,
-        created: "",
-        updated: "",
-        more_id: "",
-        __v: 0
-    },
+    currentCardsPack: {} as CardPacksType,
+    updatedGrade: {} as ChangeCardGradeResponse,
     packUserId: "",
     page: 0,
     pageCount: 0,
@@ -64,7 +50,7 @@ const cardsInitialState: cardsInitialStateType = {
     tokenDeathTime: 0
 }
 
-const cardsReducer = (state = cardsInitialState, action: CardsReducerAT): cardsInitialStateType => {
+const cardsReducer = (state = cardsInitialState, action: CardsReducerAT): CardsInitialStateType => {
 
     switch (action.type) {
         case SET_CARDS:
@@ -93,6 +79,11 @@ const cardsReducer = (state = cardsInitialState, action: CardsReducerAT): cardsI
             return {
                 ...state,
                 currentCardsPack: action.payload.data
+            }
+        case UPDATE_GRADE:
+            return {
+                ...state,
+                updatedGrade: action.data
             }
         default: {
             return state
@@ -143,11 +134,23 @@ export const updateCardTC = (data: UpdateCardParamsType): ThunkType => async (di
         errorHandler(e, dispatch)
     }
 }
+export const changeGradeTC = (data: ChangeGradeType): ThunkType => async (dispatch) => {
+    dispatch(setIsLoadingAC('loading'))
+    try {
+        const res = await cardsAPI.changeGradeCard(data)
+        if (res.data)
+            dispatch(updateGrade(res.data))
+        dispatch(setIsLoadingAC('succeeded'))
+    } catch (e) {
+        errorHandler(e, dispatch)
+    }
+}
 
-export type cardsInitialStateType = {
+type CardsInitialStateType = {
     getCardParams: GetCardsParamsType
     cards: CardsType[] | []
     currentCardsPack: CardPacksType
+    updatedGrade: ChangeCardGradeResponse
     packUserId: string
     page: number
     pageCount: number
@@ -157,16 +160,18 @@ export type cardsInitialStateType = {
     token: string
     tokenDeathTime: number
 }
-type setCardsAT = ReturnType<typeof setCards>
-type createCardsAT = ReturnType<typeof addCard>
-type deleteCardsAT = ReturnType<typeof removeCard>
-type renovationCardAT = ReturnType<typeof renovationCard>
-type setCardsPackAT = ReturnType<typeof setCardsPack>
+type SetCardsAT = ReturnType<typeof setCards>
+type CreateCardsAT = ReturnType<typeof addCard>
+type DeleteCardsAT = ReturnType<typeof removeCard>
+type RenovationCardAT = ReturnType<typeof renovationCard>
+type SetCardsPackAT = ReturnType<typeof setCardsPack>
+type UpdateGradeAT = ReturnType<typeof updateGrade>
 
 export type CardsReducerAT =
-    setCardsAT
+    SetCardsAT
     | SetIsLoadingAT
-    | createCardsAT
-    | deleteCardsAT
-    | renovationCardAT
-    | setCardsPackAT
+    | CreateCardsAT
+    | DeleteCardsAT
+    | RenovationCardAT
+    | SetCardsPackAT
+    | UpdateGradeAT

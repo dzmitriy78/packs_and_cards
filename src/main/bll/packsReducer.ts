@@ -161,10 +161,10 @@ export type packsInitialStateType = {
     token: string
     tokenDeathTime: number
 }
-type setPacksAT = ReturnType<typeof setPacks>
-type addPackAT = ReturnType<typeof addPack>
-type removePackAT = ReturnType<typeof removePack>
-type updatePackAT = ReturnType<typeof updatePackName>
-type setPacksParamsAT = ReturnType<typeof setPacksParams>
+type SetPacksAT = ReturnType<typeof setPacks>
+type AddPackAT = ReturnType<typeof addPack>
+type RemovePackAT = ReturnType<typeof removePack>
+type UpdatePackAT = ReturnType<typeof updatePackName>
+type SetPacksParamsAT = ReturnType<typeof setPacksParams>
 
-export type PacksReducerAT = setPacksAT | setPacksParamsAT | SetIsLoadingAT | addPackAT | removePackAT | updatePackAT
+export type PacksReducerAT = SetPacksAT | SetPacksParamsAT | SetIsLoadingAT | AddPackAT | RemovePackAT | UpdatePackAT
