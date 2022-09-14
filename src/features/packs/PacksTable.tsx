@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {DataTable} from 'primereact/datatable';
 import {Column} from 'primereact/column';
 import {CardPacksType, GetCardsParamsType} from "../../main/dal/packsAPI";
@@ -11,6 +11,9 @@ import {useNavigate} from "react-router-dom";
 import {CARDS_PATH} from "../../main/Routing";
 import {getCardsTC, setCardsPack} from "../../main/bll/cardsReducer";
 import moment from "moment";
+import Confirm from "../../utils/ConfirmDialog";
+import {InputText} from "primereact/inputtext";
+import Modal from "../../utils/Modal";
 
 
 const PacksTable = () => {
@@ -24,19 +27,20 @@ const PacksTable = () => {
     const params = useSelector<AppStoreType, GetCardsParamsType>(state => state.cards.getCardParams)
     const navigate = useNavigate()
 
+    const [newName, setNewName] = useState("")
+
     const onDeletePack = (id: string) => {
         dispatch(deletePackTC(id))
     }
     const onUpdatePack = (id: string) => {
-        const newName = String(prompt("Enter a new pack name"))
         if (newName)
             dispatch(updatePackTC(id, newName))
     }
 
     const actionBodyTemplate = (rowData: any) => {
-        const currentPack = cardPacks.filter((c)=>c._id===rowData._id)
+        const currentPack = cardPacks.filter((c) => c._id === rowData._id)
         return (
-            <div style={{width: '14vw', overflow: 'hidden', textAlign: "center"}}>
+            <div style={{width: '14vw', overflow: 'hidden', textAlign: "center", display: "inline-flex"}}>
                 <Button icon="pi pi-folder-open" className="p-button-rounded p-button-success mr-2"
                         disabled={isLoading === "loading"}
                         onClick={() => {
@@ -47,19 +51,31 @@ const PacksTable = () => {
                         }/>
                 {
                     myId === userId
-                        ? <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2"
-                                  disabled={isLoading === "loading"}
-                                  onClick={() => onUpdatePack(rowData._id)
-
-                                  }/>
+                        ? <Modal icon={"pi pi-pencil"}
+                                 className="p-button-rounded p-button-success mr-2"
+                                 title={`Edit pack ${currentPack[0].name}`}
+                                 disabled={isLoading === "loading"}
+                                 callback={() => onUpdatePack(rowData._id)}>
+                            <form>
+                                <span className="p-float-label">
+                                    <InputText style={{width: "95%"}} id="newName"
+                                               value={newName}
+                                               onChange={(e) => setNewName(e.target.value)}/>
+                                    <label htmlFor="newName">new name</label>
+                                </span>
+                            </form>
+                        </Modal>
                         : ""
                 }
                 {
                     myId === userId
-                        ? <Button icon="pi pi-trash" className="p-button-rounded p-button-warning"
-                                  disabled={isLoading === "loading"}
-                                  onClick={() => onDeletePack(rowData._id)
-                                  }/>
+                        ? <Confirm icon="pi pi-trash"
+                                   className="p-button-rounded p-button-warning"
+                                   title={""}
+                                   message={`Are you sure you want to remove package ${currentPack[0].name}? All card will be deleted`}
+                                   disabled={isLoading === "loading"}
+                                   callback={() => onDeletePack(rowData._id)}
+                        />
                         : ""
                 }
             </div>

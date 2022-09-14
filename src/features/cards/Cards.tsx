@@ -1,7 +1,6 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType, DispatchType} from "../../main/bll/store";
-import {RequestLoadingType} from "../../main/bll/appReducer";
 import cl from "../packs/Packs.module.scss"
 import {createCardTC} from "../../main/bll/cardsReducer";
 import {CardPacksType} from "../../main/dal/packsAPI";
@@ -9,27 +8,31 @@ import CardsList from "./CardsList";
 import {Button} from "primereact/button";
 import {useNavigate} from "react-router-dom";
 import {PACKS_PATH} from "../../main/Routing";
+import Modal from "../../utils/Modal";
+import {InputText} from "primereact/inputtext";
+import {InputTextarea} from "primereact/inputtextarea";
+import {RequestLoadingType} from "../../main/bll/appReducer";
 
 const Cards = () => {
     const dispatch = useDispatch<DispatchType>()
     const navigate = useNavigate()
 
-    const isLoading = useSelector<AppStoreType, RequestLoadingType>(state => state.app.isLoading)
     const cardsPack = useSelector<AppStoreType, CardPacksType[]>(state => state.packs.cardPacks)
     const myId = useSelector<AppStoreType, string>(state => state.login.userData._id)
     const userId = useSelector<AppStoreType, string>(state => state.packs.getPacksParams.user_id)
-    const currentPack = useSelector<AppStoreType,CardPacksType>(state => state.cards.currentCardsPack)
+    const currentPack = useSelector<AppStoreType, CardPacksType>(state => state.cards.currentCardsPack)
+    const isLoading = useSelector<AppStoreType, RequestLoadingType>(state => state.app.isLoading)
 
+    const [question, setQuestion] = useState("")
+    const [answer, setAnswer] = useState("")
 
     const createCard = () => {
-        const question = String(prompt("Enter card question"))
-        const answer = String(prompt("Enter card answer"))
         if (question)
             dispatch(createCardTC({card: {cardsPack_id: currentPack._id, question, answer}}))
     }
 
-    return (<>
-
+    return (
+        <>
             <div className={cl.header}>
                 <Button type="button" icon="pi pi-arrow-left"
                         className="p-button-text"
@@ -39,10 +42,28 @@ const Cards = () => {
                 <div className={cl.title}>{`Pack name: ${currentPack.name}`}</div>
                 {
                     myId === userId
-                        ? <button className={cl.button}
-                                  disabled={isLoading === "loading"}
-                                  onClick={createCard}>
-                            + new card</button>
+                        ? <Modal callback={createCard}
+                                 titleBtn={"Add new card"}
+                                 title={"Add new card"}
+                                 icon={"pi pi-plus-circle"}
+                                 className={""}
+                                 disabled={isLoading === "loading"}>
+                            <form>
+                                <span className="p-float-label">
+                                    <InputText style={{width: "95%", margin: "5px"}} id="question"
+                                               value={question}
+                                               onChange={(e) => setQuestion(e.target.value)}/>
+                                    <label htmlFor="question">question</label>
+                                </span>
+                                <InputTextarea style={{width: "95%", margin: "5px"}}
+                                               value={answer}
+                                               placeholder={"answer"}
+                                               onChange={(e) => setAnswer(e.target.value)}
+                                               rows={5}
+                                               cols={30}
+                                               autoResize/>
+                            </form>
+                        </Modal>
                         : ""
                 }
             </div>

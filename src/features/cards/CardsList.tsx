@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType, DispatchType} from "../../main/bll/store";
 import {CardsType} from "../../main/dal/packsAPI";
@@ -9,6 +9,10 @@ import {Column} from "primereact/column";
 import {deleteCardTC, updateCardTC} from "../../main/bll/cardsReducer";
 import moment from "moment";
 import {Rating} from "primereact/rating";
+import Confirm from "../../utils/ConfirmDialog";
+import Modal from "../../utils/Modal";
+import {InputText} from "primereact/inputtext";
+import {InputTextarea} from "primereact/inputtextarea";
 
 const CardsList = () => {
     const dispatch = useDispatch<DispatchType>()
@@ -17,36 +21,56 @@ const CardsList = () => {
     const myId = useSelector<AppStoreType, string>(state => state.login.userData._id)
     const userId = useSelector<AppStoreType, string>(state => state.packs.getPacksParams.user_id)
 
+    const [newQuestion, setNewQuestion] = useState("")
+    const [newAnswer, setNewAnswer] = useState("")
+
     const onDeleteCard = (id: string) => {
         dispatch(deleteCardTC(id))
     }
     const onUpdateCard = (id: string) => {
-        const newQuestion = String(prompt("Enter a new question"))
-        const newAnswer = String(prompt("Enter a new answer"))
         if (newQuestion || newAnswer)
             dispatch(updateCardTC({card: {_id: id, question: newQuestion, answer: newAnswer}}))
     }
 
     const actionBodyTemplate = (rowData: any) => {
         return (
-            <div style={{width: '14vw', overflow: 'hidden', textAlign: "center"}}>
+            <div style={{width: '14vw', overflow: 'hidden', textAlign: "center", display: "inline-flex"}}>
                 <Button icon="pi pi-folder-open" className="p-button-rounded p-button-success mr-2"
                         disabled={isLoading === "loading"}
                         onClick={() => {
                         }
                         }/>
                 {myId === userId
-                    ? <Button icon="pi pi-pencil" className="p-button-rounded p-button-success mr-2"
-                              disabled={isLoading === "loading"}
-                              onClick={() => onUpdateCard(rowData._id)
-                              }/>
+                    ? <Modal icon={"pi pi-pencil"}
+                             className="p-button-rounded p-button-success mr-2"
+                             title={"Edit card"}
+                             disabled={isLoading === "loading"}
+                             callback={() => onUpdateCard(rowData._id)}>
+                        <form>
+                            <InputText style={{width: "95%", margin: "5px"}}
+                                       placeholder={"Question"}
+                                       value={newQuestion}
+                                       onChange={(e) => setNewQuestion(e.target.value)}/>
+
+                            <InputTextarea style={{width: "95%", margin: "5px"}}
+                                           value={newAnswer}
+                                           placeholder={"answer"}
+                                           onChange={(e) => setNewAnswer(e.target.value)}
+                                           rows={5}
+                                           cols={30}
+                                           autoResize/>
+                        </form>
+                    </Modal>
                     : ""
                 }
                 {myId === userId
-                    ? <Button icon="pi pi-trash" className="p-button-rounded p-button-warning"
-                              disabled={isLoading === "loading"}
-                              onClick={() => onDeleteCard(rowData._id)
-                              }/>
+                    ? <Confirm icon="pi pi-trash"
+                               className="p-button-rounded p-button-warning"
+                               title={""}
+                               message={"Are you sure you want to remove this card?"}
+                               disabled={isLoading === "loading"}
+                               callback={() => onDeleteCard(rowData._id)}
+                    />
                     : ""
                 }
             </div>
@@ -78,7 +102,7 @@ const CardsList = () => {
     const gradeTemplate = (rowData: any) => {
         return (
             <div style={{width: '12vw', overflow: 'hidden', textAlign: "center"}}>
-                <Rating value={rowData.grade} readOnly stars={5} cancel={false} />
+                <Rating value={rowData.grade} readOnly stars={5} cancel={false}/>
             </div>
         )
     }
