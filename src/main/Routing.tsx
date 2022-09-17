@@ -7,6 +7,7 @@ import SetNewPassword from "../features/autorization/SetNewPassword";
 import Profile from "../features/autorization/Profile";
 import Packs from "../features/packs/Packs";
 import Cards from "../features/cards/Cards";
+import LearnPage from "../features/learn/Learn";
 
 export const LOGIN_PATH = '/login'
 export const REGISTER_PATH = '/register'
@@ -15,6 +16,7 @@ export const NEW_PASSWORD_PATH = '/setNewPassword/:token'
 export const PROFILE_PATH = '/profile'
 export const PACKS_PATH = '/packs'
 export const CARDS_PATH = '/cards'
+export const LEARN_PATH = '/learn'
 
 const Routing = () => {
 
@@ -29,6 +31,7 @@ const Routing = () => {
                 <Route path={PROFILE_PATH} element={<Profile/>}/>
                 <Route path={PACKS_PATH} element={<Packs/>}/>
                 <Route path={CARDS_PATH} element={<Cards/>}/>
+                <Route path={LEARN_PATH} element={<LearnPage/>}/>
                 <Route path="*" element={
                     <div style={{fontSize: 100, color: "teal"}}>
                         Упс! Страница не найдена!

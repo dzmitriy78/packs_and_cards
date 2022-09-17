@@ -2,7 +2,7 @@ import {setIsLoadingAC, SetIsLoadingAT} from "./appReducer";
 import {
     CardPacksType,
     cardsAPI,
-    CardsType, ChangeCardGradeResponse, ChangeGradeType,
+    CardsType, ChangeCardGradeResponseType, ChangeGradeType,
     CreateCardResponseType,
     CreateCardsType,
     GetCardsParamsType,
@@ -24,7 +24,7 @@ export const addCard = (data: CreateCardResponseType) => ({type: CREATE_CARD, da
 export const removeCard = (cardId: string) => ({type: DELETE_CARD, cardId}) as const
 export const renovationCard = (data: CardsType) => ({type: UPDATE_CARD, data}) as const
 export const setCardsPack = (data: CardPacksType) => ({type: SET_CARDS_PACK, payload: {data}}) as const
-export const updateGrade = (data: ChangeCardGradeResponse) => ({type: UPDATE_GRADE, data}) as const
+export const updateGrade = (data: ChangeCardGradeResponseType) => ({type: UPDATE_GRADE, data}) as const
 
 const cardsInitialState: CardsInitialStateType = {
     getCardParams: {
@@ -39,7 +39,7 @@ const cardsInitialState: CardsInitialStateType = {
     },
     cards: [],
     currentCardsPack: {} as CardPacksType,
-    updatedGrade: {} as ChangeCardGradeResponse,
+    updatedGrade: {} as ChangeCardGradeResponseType,
     packUserId: "",
     page: 0,
     pageCount: 0,
@@ -150,7 +150,7 @@ type CardsInitialStateType = {
     getCardParams: GetCardsParamsType
     cards: CardsType[] | []
     currentCardsPack: CardPacksType
-    updatedGrade: ChangeCardGradeResponse
+    updatedGrade: ChangeCardGradeResponseType
     packUserId: string
     page: number
     pageCount: number

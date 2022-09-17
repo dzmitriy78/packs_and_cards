@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import cl from "./Packs.module.scss";
+import cl from "../../styles/Packs.module.scss";
 import PackFilter from "./PackFilter";
 import PacksTable from "./PacksTable";
 import {useDispatch, useSelector} from "react-redux";
@@ -12,6 +12,7 @@ import {LOGIN_PATH, PROFILE_PATH} from "../../main/Routing";
 import Modal from "../../utils/Modal";
 import {InputText} from "primereact/inputtext";
 import {RequestLoadingType} from "../../main/bll/appReducer";
+import Loader from "../../main/ui/Loader";
 
 const Packs = () => {
 
@@ -37,6 +38,7 @@ const Packs = () => {
 
     return (
         <>
+            {isLoading === 'loading' && <Loader/>}
             <div className={cl.header}>
                 <Button type="button" icon="pi pi-arrow-left"
                         className="p-button-text"

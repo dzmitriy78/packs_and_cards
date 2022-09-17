@@ -1,5 +1,5 @@
 import React from 'react';
-import cl from "./PackFilter.module.scss"
+import cl from "../../styles/PackFilter.module.scss"
 import SelectButt from "../../utils/SelectButton";
 import SliderFilter from "../../utils/SliderFilter";
 import SearchInput from "../../utils/SearchInput";

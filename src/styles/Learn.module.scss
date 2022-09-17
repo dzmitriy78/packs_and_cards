@@ -1,0 +1,44 @@
+.header {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 30px;
+
+  .title {
+    height: 27px;
+    left: 136px;
+    top: 99px;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 22px;
+    line-height: 27px;
+    color: #00806f;
+  }
+}
+
+.quTitle {
+  font-size: 24px;
+  margin: 20px;
+
+  .qu {
+    font-weight: bolder;
+    color: teal;
+  }
+
+  .ans {
+    font-style: italic;
+    font-weight: bold
+  }
+}
+
+.grade {
+  display: inline-flex;
+  flex-direction: column;
+
+  & Button {
+    margin: 10px;
+    justify-content: center;
+  }
+}

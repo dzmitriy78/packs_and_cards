@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType, DispatchType} from "../../main/bll/store";
-import cl from "../packs/Packs.module.scss"
+import cl from "../../styles/Packs.module.scss"
 import {createCardTC} from "../../main/bll/cardsReducer";
 import {CardPacksType} from "../../main/dal/packsAPI";
 import CardsList from "./CardsList";
@@ -12,6 +12,7 @@ import Modal from "../../utils/Modal";
 import {InputText} from "primereact/inputtext";
 import {InputTextarea} from "primereact/inputtextarea";
 import {RequestLoadingType} from "../../main/bll/appReducer";
+import Loader from "../../main/ui/Loader";
 
 const Cards = () => {
     const dispatch = useDispatch<DispatchType>()
@@ -33,6 +34,7 @@ const Cards = () => {
 
     return (
         <>
+            {isLoading === 'loading' && <Loader/>}
             <div className={cl.header}>
                 <Button type="button" icon="pi pi-arrow-left"
                         className="p-button-text"

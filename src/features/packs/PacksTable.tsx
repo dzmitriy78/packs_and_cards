@@ -8,7 +8,7 @@ import {AppStoreType, DispatchType} from "../../main/bll/store";
 import {Button} from "primereact/button";
 import {RequestLoadingType} from "../../main/bll/appReducer";
 import {useNavigate} from "react-router-dom";
-import {CARDS_PATH} from "../../main/Routing";
+import {CARDS_PATH, LEARN_PATH} from "../../main/Routing";
 import {getCardsTC, setCardsPack} from "../../main/bll/cardsReducer";
 import moment from "moment";
 import Confirm from "../../utils/ConfirmDialog";
@@ -43,12 +43,11 @@ const PacksTable = () => {
             <div style={{width: '14vw', overflow: 'hidden', textAlign: "center", display: "inline-flex"}}>
                 <Button icon="pi pi-folder-open" className="p-button-rounded p-button-success mr-2"
                         disabled={isLoading === "loading"}
-                        onClick={() => {
+                        onClick={()=> {
                             dispatch(getCardsTC({...params, cardsPack_id: rowData._id}))
                             dispatch(setCardsPack(currentPack[0]))
-                            navigate(CARDS_PATH)
-                        }
-                        }/>
+                            navigate(LEARN_PATH)}}
+                       />
                 {
                     myId === userId
                         ? <Modal icon={"pi pi-pencil"}
@@ -83,8 +82,14 @@ const PacksTable = () => {
     }
 
     const nameTemplate = (rowData: any) => {
+        const currentPack = cardPacks.filter((c) => c._id === rowData._id)
         return (
-            <div style={{width: '25vw', overflow: 'hidden'}}>
+            <div style={{width: '25vw', overflow: 'hidden', cursor: "pointer"}}  onClick={() => {
+                dispatch(getCardsTC({...params, cardsPack_id: rowData._id}))
+                dispatch(setCardsPack(currentPack[0]))
+                navigate(CARDS_PATH)
+            }
+            }>
                 {rowData.name}
             </div>
         )
