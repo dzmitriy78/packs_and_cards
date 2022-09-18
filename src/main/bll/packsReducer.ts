@@ -43,10 +43,10 @@ const packsInitialState: packsInitialStateType = {
     getPacksParams: {
         packName: "",
         min: 0,
-        max: 120,
+        max: 0,
         sortPacks: "0created",
         page: 1,
-        pageCount: 10000,
+        pageCount: 100,
         user_id: /*"62d013204d4a530a949a8238"*/ ""
     },
     page: 0,
@@ -64,7 +64,7 @@ const packsReducer = (state = packsInitialState, action: PacksReducerAT): packsI
         case SET_PACKS:
             return {
                 ...state,
-                cardPacks: action.data.cardPacks
+                ...action.data
             }
         case SET_PACKS_PARAMS:
             return {

@@ -1,0 +1,29 @@
+.rootProfile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 24px;
+  margin: 20px;
+
+  .profile {
+    width: 500px;
+    text-align: inherit;
+    font-weight: bold;
+
+    & span {
+      color: #694382;
+    }
+
+    .value {
+      color: teal;
+      font-style: italic;
+      margin-bottom: 15px;
+    }
+
+    .name {
+      font-size: 50px;
+      color: teal;
+      margin-bottom: 20px;
+    }
+  }
+}

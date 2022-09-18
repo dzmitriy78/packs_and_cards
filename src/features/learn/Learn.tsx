@@ -104,7 +104,7 @@ const LearnPage = () => {
                     </div>
                     <div className={cl.grade}>
                         {grades.map((g, i) => (
-                            <Button key={'grade-' + i}
+                            <Button key={'grade-' + i} disabled={isLoading === "loading"}
                                     onClick={() => {
                                         // @ts-ignore
                                         dispatch(changeGradeTC({grade: i + 1, card_id: card._id}))

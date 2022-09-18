@@ -21,9 +21,11 @@ const SelectButt = () => {
     const allParams = {...params, user_id: ""}
 
     useEffect(() => {
-        value === "My"
-            ? dispatch(setPacksParamsTC(myParams))
-            : dispatch(setPacksParamsTC(allParams))
+        if (value === "My") {
+            dispatch(setPacksParamsTC(myParams))
+        } else if (value === "All") {
+            dispatch(setPacksParamsTC(allParams))
+        }
     }, [value])
 
     return (
@@ -33,7 +35,7 @@ const SelectButt = () => {
                               onChange={(e: { value: string }) => setValue(e.value)}/>
             </div>
         </div>
-    );
-};
+    )
+}
 
 export default SelectButt;

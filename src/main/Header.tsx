@@ -1,20 +1,21 @@
-import React, {useState} from 'react';
-import {NavLink, useNavigate} from "react-router-dom";
+import React, {useState} from 'react'
+import {NavLink, useNavigate} from "react-router-dom"
 import {FORGOT_PATH, LOGIN_PATH, PACKS_PATH, PROFILE_PATH, REGISTER_PATH} from "./Routing"
-import style from "../styles/Header.module.scss";
-import {logoutTC} from "./bll/loginReducer";
-import {useDispatch, useSelector} from "react-redux";
-import {AppStoreType, DispatchType} from "./bll/store";
+import cl from "../styles/Header.module.scss"
+import {logoutTC} from "./bll/loginReducer"
+import {useDispatch, useSelector} from "react-redux"
+import {AppStoreType, DispatchType} from "./bll/store"
+import {Button} from "primereact/button"
 
 
 const Header = () => {
 
-    let isAuth = useSelector<AppStoreType, boolean>((state) => state.login.isAuth)
-
-    const [show, setShow] = useState(false)
-    const setActive = ({isActive}: { isActive: boolean }): string => isActive ? style.active : style.item
+    const isAuth = useSelector<AppStoreType, boolean>((state) => state.login.isAuth)
     const navigate = useNavigate()
     const dispatch = useDispatch<DispatchType>()
+
+    const [show, setShow] = useState(false)
+    const setActive = ({isActive}: { isActive: boolean }): string => isActive ? cl.active : cl.item
 
     const loginHandler = () => {
         navigate(LOGIN_PATH)
@@ -26,19 +27,31 @@ const Header = () => {
     }
 
     return (
-        <div className={style.header}>
-
-            <button className={style.btn} onClick={() => setShow(!show)}>{show ? 'hide header' : 'show header'}</button>
+        <div className={cl.header}>
+            <Button icon="pi pi-eye"
+                    className={cl.btn}
+                    onClick={() => setShow(!show)}>
+                {show ? 'hide' : 'show'}
+            </Button>
 
             {show && <NavLink className={setActive} to={LOGIN_PATH}>login</NavLink>}
             {show && <NavLink className={setActive} to={REGISTER_PATH}>register</NavLink>}
             {show && <NavLink className={setActive} to={FORGOT_PATH}>forgot</NavLink>}
             {show && <NavLink className={setActive} to={PROFILE_PATH}>profile</NavLink>}
             {show && <NavLink className={setActive} to={PACKS_PATH}>packs</NavLink>}
-            {isAuth && <button className={style.btn} onClick={logoutHandler}>log out</button>}
-            {!isAuth && <button className={style.btn} onClick={loginHandler}>log in</button>}
+            {isAuth
+                ?<Button
+                    icon="pi pi-sign-out"
+                    className={cl.btn}
+                    onClick={logoutHandler}>Sign out
+                </Button>
+                :<Button
+                    icon="pi pi-sign-in"
+                    className={cl.btn}
+                    onClick={loginHandler}>Sign in
+                </Button>}
         </div>
-    );
-};
+    )
+}
 
-export default Header;
+export default Header

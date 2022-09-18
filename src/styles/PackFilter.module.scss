@@ -17,7 +17,6 @@
   .rangeBlock {
     height: 62px;
     font-size: 18px;
-    font-weight: bold;
   }
   .searchTitle {
      font-family: 'Montserrat', sans-serif;
@@ -29,5 +28,6 @@
      align-items: center;
      color: #000000;
     margin-bottom: 10px;
+    justify-content: center
    }
 }

@@ -7,16 +7,20 @@ import {updateUserTC} from "../../main/bll/profileReducer";
 import Loader from "../../main/ui/Loader";
 import {RequestLoadingType} from "../../main/bll/appReducer";
 import {UserDataType} from "../../main/dal/authAPI";
+import cl from "./../../styles/Profile.module.scss"
+import moment from "moment";
 
 const Profile = () => {
     const isAuth = useSelector<AppStoreType, boolean>((state) => state.login.isAuth)
     const userData = useSelector<AppStoreType, UserDataType>((state) => state.login.userData)
     const isLoading = useSelector<AppStoreType, RequestLoadingType>((state) => state.app.isLoading)
     const dispatch = useDispatch<DispatchType>()
+
     const [editName, setEditName] = useState(false)
     const [editAvatar, setEditAvatar] = useState(false)
     const [newName, setNewName] = useState<string>(userData.name)
     const [newAvatar, setNewAvatar] = useState<string>("")
+
     const changeAvatar: React.ChangeEventHandler<HTMLInputElement> = async (e) => {
         setNewAvatar(e.currentTarget.value)
     }
@@ -25,7 +29,7 @@ const Profile = () => {
     }
     const setUpdateUser = async () => {
         await setEditAvatar(false)
-        await setEditName(false)
+        setEditName(false)
 
         dispatch(updateUserTC(newName, newAvatar))
     }
@@ -34,10 +38,10 @@ const Profile = () => {
         <>
             {isLoading === 'loading' && <Loader/>}
             {isAuth
-                ? <div>
+                ? <div className={cl.rootProfile}>
                     <div onBlur={setUpdateUser}>
                         <div onDoubleClick={() => setEditAvatar(true)}>
-                            <img style={{maxWidth: "100px"}}
+                            <img style={{maxWidth: "150px"}}
                                  src={userData.avatar}
                                  alt={"avatar"}/>
                         </div>
@@ -47,19 +51,25 @@ const Profile = () => {
                                               defaultValue={userData.avatar}
                         />}
                     </div>
-                    <div onBlur={setUpdateUser}>
-                        <div onDoubleClick={() => setEditName(true)}><span>Name: </span>{userData.name}</div>
+                    <div className={cl.profile} onBlur={setUpdateUser}>
+                        <div className={cl.name}
+                             onDoubleClick={() => setEditName(true)}>
+                            {userData.name}
+                        </div>
                         {editName && <input placeholder={"enter image url"}
                                             autoFocus={true}
                                             onChange={changeName}
                                             defaultValue={userData.name}
                         />}
+                        <span>e-mail: </span>
+                        <div className={cl.value}>{userData.email}</div>
+                        <span>created: </span>
+                        <div className={cl.value}>
+                            {moment(userData.created).format("DD.MM.YYYY  HH:mm")}
+                        </div>
+                        <span>packs count: </span>
+                        <div className={cl.value}>{userData.publicCardPacksCount}</div>
                     </div>
-                    <div><span>e-mail: </span>{userData.email}</div>
-                    <div><span>created: </span>{userData.created}</div>
-                    <div><span>number of cards: </span>{userData.publicCardPacksCount}</div>
-                    <div><span>userId: </span>{userData._id}</div>
-
                 </div>
                 : <div>Profile is empty.<br/> <span>Please </span>
                     <NavLink to={LOGIN_PATH}>Log in</NavLink> <span>or </span>

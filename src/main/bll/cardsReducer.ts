@@ -32,7 +32,7 @@ const cardsInitialState: CardsInitialStateType = {
         cardQuestion: "",
         cardsPack_id: /*"630b326c08095407487d7a75"*/"",
         min: 0,
-        max: 120,
+        max: 0,
         sortCards: "1grade",
         page: 1,
         pageCount: 120

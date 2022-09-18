@@ -1,31 +1,21 @@
 .header {
   height: 80px;
-  background-color: cadetblue;
+  border: teal 3px dotted;
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 10px 0 10px;
 
   .btn {
-    cursor: pointer;
-    background-color: teal;
-    width: 170px;
-    color: white;
+    width: 110px;
     font-size: 20px;
-    border: 1px solid darkslateblue;
-    border-radius: 5px;
-    align-self: auto;
-    padding: 12px 24px;
+    justify-content: space-around
   }
 
   .item {
-    color: white;
+    color: teal;
     font-size: 20px;
     text-decoration: none;
-  }
-
-  .item:hover {
-    color: darkslateblue;
   }
 
   .active {

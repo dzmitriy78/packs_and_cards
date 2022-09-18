@@ -39,15 +39,19 @@ const PacksTable = () => {
 
     const actionBodyTemplate = (rowData: any) => {
         const currentPack = cardPacks.filter((c) => c._id === rowData._id)
+
         return (
-            <div style={{width: '14vw', overflow: 'hidden', textAlign: "center", display: "inline-flex"}}>
-                <Button icon="pi pi-folder-open" className="p-button-rounded p-button-success mr-2"
+            <div style={{overflow: 'hidden', textAlign: "center", display: "inline-flex"}}>
+                <Button icon="pi pi-book"
+                        className="p-button-rounded p-button-success mr-2"
+                        title={"learn"}
                         disabled={isLoading === "loading"}
-                        onClick={()=> {
+                        onClick={() => {
                             dispatch(getCardsTC({...params, cardsPack_id: rowData._id}))
                             dispatch(setCardsPack(currentPack[0]))
-                            navigate(LEARN_PATH)}}
-                       />
+                            navigate(LEARN_PATH)
+                        }}
+                />
                 {
                     myId === userId
                         ? <Modal icon={"pi pi-pencil"}
@@ -56,12 +60,10 @@ const PacksTable = () => {
                                  disabled={isLoading === "loading"}
                                  callback={() => onUpdatePack(rowData._id)}>
                             <form>
-                                <span className="p-float-label">
-                                    <InputText style={{width: "95%"}} id="newName"
-                                               value={newName}
-                                               onChange={(e) => setNewName(e.target.value)}/>
-                                    <label htmlFor="newName">new name</label>
-                                </span>
+                                <span style={{color: "teal", fontWeight: "bold", margin: "5px"}}>Pack name:</span>
+                                <InputText style={{width: "95%"}} id="newName"
+                                           defaultValue={currentPack[0].name}
+                                           onChange={(e) => setNewName(e.target.value)}/>
                             </form>
                         </Modal>
                         : ""
@@ -84,10 +86,12 @@ const PacksTable = () => {
     const nameTemplate = (rowData: any) => {
         const currentPack = cardPacks.filter((c) => c._id === rowData._id)
         return (
-            <div style={{width: '25vw', overflow: 'hidden', cursor: "pointer"}}  onClick={() => {
-                dispatch(getCardsTC({...params, cardsPack_id: rowData._id}))
-                dispatch(setCardsPack(currentPack[0]))
-                navigate(CARDS_PATH)
+            <div style={{width: '25vw', overflow: 'hidden', cursor: "pointer"}} onClick={() => {
+                if (isLoading !== "loading") {
+                    dispatch(getCardsTC({...params, cardsPack_id: rowData._id}))
+                    dispatch(setCardsPack(currentPack[0]))
+                    navigate(CARDS_PATH)
+                }
             }
             }>
                 {rowData.name}

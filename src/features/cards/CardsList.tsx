@@ -33,9 +33,13 @@ const CardsList = () => {
     }
 
     const actionBodyTemplate = (rowData: any) => {
+
+        const currentCard = cards.filter((c) => c._id === rowData._id)
+
         return (
             <div style={{width: '14vw', overflow: 'hidden', textAlign: "center", display: "inline-flex"}}>
-                <Button icon="pi pi-folder-open" className="p-button-rounded p-button-success mr-2"
+                <Button icon="pi pi-folder-open"
+                        className="p-button-rounded p-button-success mr-2"
                         disabled={isLoading === "loading"}
                         onClick={() => {
                         }
@@ -47,14 +51,14 @@ const CardsList = () => {
                              disabled={isLoading === "loading"}
                              callback={() => onUpdateCard(rowData._id)}>
                         <form>
+                            <span style={{color: "teal", fontWeight: "bold", margin: "5px"}}>Question:</span>
                             <InputText style={{width: "95%", margin: "5px"}}
-                                       placeholder={"Question"}
-                                       value={newQuestion}
+                                       defaultValue={currentCard[0].question}
                                        onChange={(e) => setNewQuestion(e.target.value)}/>
 
+                            <span style={{color: "teal", fontWeight: "bold", margin: "5px"}}>Answer:</span>
                             <InputTextarea style={{width: "95%", margin: "5px"}}
-                                           value={newAnswer}
-                                           placeholder={"answer"}
+                                           defaultValue={currentCard[0].answer}
                                            onChange={(e) => setNewAnswer(e.target.value)}
                                            rows={5}
                                            cols={30}
