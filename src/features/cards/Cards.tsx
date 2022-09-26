@@ -3,7 +3,7 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType, DispatchType} from "../../main/bll/store";
 import cl from "../../styles/Packs.module.scss"
 import {createCardTC} from "../../main/bll/cardsReducer";
-import {CardPacksType} from "../../main/dal/packsAPI";
+import {CardPacksType, CardsType} from "../../main/dal/packsAPI";
 import CardsList from "./CardsList";
 import {Button} from "primereact/button";
 import {useNavigate} from "react-router-dom";
@@ -18,11 +18,10 @@ const Cards = () => {
     const dispatch = useDispatch<DispatchType>()
     const navigate = useNavigate()
 
-    const cardsPack = useSelector<AppStoreType, CardPacksType[]>(state => state.packs.cardPacks)
-    const myId = useSelector<AppStoreType, string>(state => state.login.userData._id)
-    const userId = useSelector<AppStoreType, string>(state => state.packs.getPacksParams.user_id)
     const currentPack = useSelector<AppStoreType, CardPacksType>(state => state.cards.currentCardsPack)
     const isLoading = useSelector<AppStoreType, RequestLoadingType>(state => state.app.isLoading)
+    const cards = useSelector<AppStoreType, CardsType[] | []>(state => state.cards.cards)
+    const myName = useSelector<AppStoreType, string>(state => state.login.userData.name)
 
     const [question, setQuestion] = useState("")
     const [answer, setAnswer] = useState("")
@@ -43,7 +42,7 @@ const Cards = () => {
                 >Back to packs</Button>
                 <div className={cl.title}>{`Pack name: ${currentPack.name}`}</div>
                 {
-                    myId === userId
+                    myName === currentPack.user_name
                         ? <Modal callback={createCard}
                                  titleBtn={"Add new card"}
                                  title={"Add new card"}
@@ -69,7 +68,9 @@ const Cards = () => {
                         : ""
                 }
             </div>
-            {cardsPack && <CardsList/>}
+            {cards.length
+                ? <CardsList/>
+                : <div className={cl.title}>This pack is empty</div>}
         </>
     )
 }

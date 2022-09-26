@@ -12,20 +12,21 @@ const SelectButt = () => {
     const dispatch = useDispatch<DispatchType>()
     const params = useSelector<AppStoreType, GetPacksParamsType>(state => state.packs.getPacksParams)
     const myId = useSelector<AppStoreType, string>(state => state.login.userData._id)
+    const userId = useSelector<AppStoreType, string>(state => state.packs.getPacksParams.user_id)
     const isLoading = useSelector<AppStoreType, RequestLoadingType>(state => state.app.isLoading)
 
-    const [value, setValue] = useState<string>('All')
+    const firstValue = myId === userId ? "My" : "All"
+    const [value, setValue] = useState<string>(firstValue)
     const options: SelectItemOptionsType = ['My', 'All']
 
     const myParams = {...params, user_id: myId}
     const allParams = {...params, user_id: ""}
 
     useEffect(() => {
-        if (value === "My") {
+        if (value === "My")
             dispatch(setPacksParamsTC(myParams))
-        } else if (value === "All") {
+        if (value === "All")
             dispatch(setPacksParamsTC(allParams))
-        }
     }, [value])
 
     return (

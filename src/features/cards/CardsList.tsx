@@ -3,7 +3,6 @@ import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType, DispatchType} from "../../main/bll/store";
 import {CardsType} from "../../main/dal/packsAPI";
 import {RequestLoadingType} from "../../main/bll/appReducer";
-import {Button} from "primereact/button";
 import {DataTable} from "primereact/datatable";
 import {Column} from "primereact/column";
 import {deleteCardTC, updateCardTC} from "../../main/bll/cardsReducer";
@@ -19,7 +18,6 @@ const CardsList = () => {
     const isLoading = useSelector<AppStoreType, RequestLoadingType>(state => state.app.isLoading)
     const cards = useSelector<AppStoreType, CardsType[] | []>(state => state.cards.cards)
     const myId = useSelector<AppStoreType, string>(state => state.login.userData._id)
-    const userId = useSelector<AppStoreType, string>(state => state.packs.getPacksParams.user_id)
 
     const [newQuestion, setNewQuestion] = useState("")
     const [newAnswer, setNewAnswer] = useState("")
@@ -38,13 +36,7 @@ const CardsList = () => {
 
         return (
             <div style={{width: '14vw', overflow: 'hidden', textAlign: "center", display: "inline-flex"}}>
-                <Button icon="pi pi-folder-open"
-                        className="p-button-rounded p-button-success mr-2"
-                        disabled={isLoading === "loading"}
-                        onClick={() => {
-                        }
-                        }/>
-                {myId === userId
+                {myId === currentCard[0].more_id
                     ? <Modal icon={"pi pi-pencil"}
                              className="p-button-rounded p-button-success mr-2"
                              title={"Edit card"}
@@ -67,7 +59,7 @@ const CardsList = () => {
                     </Modal>
                     : ""
                 }
-                {myId === userId
+                {myId === currentCard[0].more_id
                     ? <Confirm icon="pi pi-trash"
                                className="p-button-rounded p-button-warning"
                                title={""}

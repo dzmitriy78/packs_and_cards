@@ -5,18 +5,6 @@
   align-items: center;
   margin: 30px;
 
-  .title {
-    height: 27px;
-    left: 136px;
-    top: 99px;
-    font-family: 'Montserrat', sans-serif;
-    font-style: normal;
-    font-weight: 600;
-    font-size: 22px;
-    line-height: 27px;
-    color: #00806f;
-  }
-
   .button {
     border: 1px solid #676767;
     background: #14B8A6;
@@ -31,4 +19,16 @@
     letter-spacing: 0.01em;
     color: #FFFFFF;
   }
+}
+
+.title {
+  height: 27px;
+  left: 136px;
+  top: 99px;
+  font-family: 'Montserrat', sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 27px;
+  color: #00806f;
 }

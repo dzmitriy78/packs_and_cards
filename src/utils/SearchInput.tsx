@@ -24,7 +24,7 @@ const SearchInput: React.FC<any> = () => {
             <div className="card">
               <span className="p-input-icon-left">
                     <i className="pi pi-search"/>
-                    <InputText value={value} onChange={(e) => setValue(e.target.value)} placeholder="Search"/>
+                    <InputText type="search" value={value} onChange={(e) => setValue(e.target.value)}/>
                 </span>
             </div>
         </div>

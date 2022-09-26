@@ -1,6 +1,6 @@
 import React from 'react';
 import {useFormik} from "formik";
-import style from "../../styles/Login.module.scss"
+import cl from "../../styles/Login.module.scss"
 import {loginTC} from "../../main/bll/loginReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {NavLink} from "react-router-dom";
@@ -12,6 +12,7 @@ import {RequestLoadingType} from "../../main/bll/appReducer";
 import {InputText} from "primereact/inputtext";
 import {Checkbox} from "primereact/checkbox";
 import {Button} from "primereact/button";
+import {Password} from "primereact/password";
 
 const Login = () => {
 
@@ -42,54 +43,44 @@ const Login = () => {
         }
     })
 
-    function togglePassword() {
-        const x: any = document.getElementById("login");
-        if (x.type === "password") {
-            x.type = "text";
-        } else {
-            x.type = "password";
-        }
-    }
-
     return <>
         {isLoading === 'loading' && <Loader/>}
         {isAuth && <Welcome/>}
-        {!isAuth && <div>
-            <div>Please enter your login and password or <br/>
-                <NavLink to={REGISTER_PATH}>Register</NavLink>
+        {!isAuth &&
+            <div>
+                <div>Please enter your login and password or <br/>
+                    <NavLink to={REGISTER_PATH}>Register</NavLink>
+                </div>
+                <form className={cl.form} onSubmit={formik.handleSubmit}>
+                    <InputText
+                        type={"email"}
+                        placeholder="Email"
+                        {...formik.getFieldProps("email")}
+                    />
+                    {formik.touched.email && formik.errors.email
+                        ? <div style={{color: "red"}}>{formik.errors.email}</div>
+                        : null}
+                    <Password
+                        placeholder="Password"
+                        toggleMask
+                        {...formik.getFieldProps("password")}
+                    />
+                    {formik.touched.password && formik.errors.password
+                        ? <div style={{color: "red"}}>{formik.errors.password}</div>
+                        : null}
+                    <label> Remember me </label>
+                    <Checkbox inputId="binary"
+                              type={"checkbox"}
+                              {...formik.getFieldProps("rememberMe")}
+                              checked={formik.values.rememberMe}
+                    />
+                    <Button type={'submit'} className={cl.button} disabled={isLoading === 'loading'}>Sign in</Button>
+                </form>
+                <div>Forgot your password? <br/>
+                    <NavLink to={FORGOT_PATH}>Restore password</NavLink>
+                </div>
             </div>
-            <form className={style.form} onSubmit={formik.handleSubmit}>
-                <InputText
-                    type={"email"}
-                    placeholder="Email"
-                    {...formik.getFieldProps("email")}
-                />
-                {formik.touched.email && formik.errors.email ?
-                    <div style={{color: "red"}}>{formik.errors.email}</div> : null}
-                <InputText
-                    type="password"
-                    placeholder="Password"
-                    id="login"
-                    {...formik.getFieldProps("password")}
-                />
-                {formik.touched.password && formik.errors.password ?
-                    <div style={{color: "red"}}>{formik.errors.password}</div> : null}
-                <label>Show Password</label>
-                <input type="checkbox" onClick={togglePassword}/>
-                <label> Remember me </label>
-                <Checkbox inputId="binary"
-                          type={"checkbox"}
-                          {...formik.getFieldProps("rememberMe")}
-                          checked={formik.values.rememberMe}
-                />
-                <Button type={'submit'} className={style.button} disabled={isLoading === 'loading'}>Sign in</Button>
-            </form>
-            <div>Forgot your password? <br/>
-                <NavLink to={FORGOT_PATH}>Restore password</NavLink>
-            </div>
-        </div>}
-
-
+        }
     </>
 }
 

@@ -3,12 +3,13 @@ import {AppStoreType, DispatchType} from "../../main/bll/store";
 import {useDispatch, useSelector} from "react-redux";
 import {useFormik} from "formik";
 import {useNavigate} from "react-router-dom";
-import style from "../../styles/Login.module.scss";
+import cl from "../../styles/Login.module.scss";
 import {registerTC} from "../../main/bll/registerReducer";
 import Loader from "../../main/ui/Loader";
 import {RequestLoadingType} from "../../main/bll/appReducer";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
+import {Password} from "primereact/password";
 
 const Register: React.FC = () => {
     const dispatch = useDispatch<DispatchType>()
@@ -38,37 +39,27 @@ const Register: React.FC = () => {
         }
     })
 
-    function togglePassword() {
-        const x: any = document.getElementById("register");
-        if (x.type === "password") {
-            x.type = "text";
-        } else {
-            x.type = "password";
-        }
-    }
-
     return <div>
         {isLoading === 'loading' && <Loader/>}
         <div>To register, enter your e-mail <br/>and create a password <br/>(at least 7 characters)</div>
-        <form className={style.form} onSubmit={formik.handleSubmit}>
+        <form className={cl.form} onSubmit={formik.handleSubmit}>
             <InputText
                 type={"email"}
                 placeholder="Email"
                 {...formik.getFieldProps("email")}
             />
-            {formik.touched.email && formik.errors.email ?
-                <div style={{color: "red"}}>{formik.errors.email}</div> : null}
-            <InputText
-                type="password"
+            {formik.touched.email && formik.errors.email
+                ? <div style={{color: "red"}}>{formik.errors.email}</div>
+                : null}
+            <Password
                 placeholder="Password"
-                id="register"
+                toggleMask
                 {...formik.getFieldProps("password")}
             />
-            {formik.touched.password && formik.errors.password ?
-                <div style={{color: "red"}}>{formik.errors.password}</div> : null}
-            <label>Show Password</label>
-            <input type="checkbox" onClick={togglePassword}/>
-            <Button type={'submit'} className={style.button} disabled={isLoading === 'loading'}>Register</Button>
+            {formik.touched.password && formik.errors.password
+                ? <div style={{color: "red"}}>{formik.errors.password}</div>
+                : null}
+            <Button type={'submit'} className={cl.button} disabled={isLoading === 'loading'}>Register</Button>
         </form>
     </div>
 }

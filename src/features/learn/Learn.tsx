@@ -2,17 +2,15 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import cl from "./../../styles/Learn.module.scss"
 import {useNavigate} from "react-router-dom";
-
 import {Button} from "primereact/button";
-import {AppStoreType} from "../../main/bll/store";
+import {AppStoreType, DispatchType} from "../../main/bll/store";
 import {CardsType} from "../../main/dal/packsAPI";
 import {changeGradeTC} from "../../main/bll/cardsReducer";
 import {CARDS_PATH} from "../../main/Routing";
 import {RequestLoadingType} from "../../main/bll/appReducer";
 import Loader from "../../main/ui/Loader";
 
-
-const grades = ['не знал', 'забыл', 'долго думал', 'перепутал', 'знал'];
+const grades = ['did not know', 'forgot', 'long thought', 'confused', 'knew'];
 
 const getCard = (cards: CardsType[]) => {
 
@@ -30,7 +28,7 @@ const getCard = (cards: CardsType[]) => {
 const LearnPage = () => {
 
     const navigate = useNavigate()
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<DispatchType>()
 
     const cards = useSelector<AppStoreType, CardsType[]>(state => state.cards.cards)
     const _id = useSelector<AppStoreType, string>(state => state.cards.currentCardsPack._id)
@@ -81,9 +79,13 @@ const LearnPage = () => {
                         className="p-button-text"
                         style={{width: "90px"}}
                         onClick={() => navigate(CARDS_PATH)}>
-                    Back to cards pack
+                    To cards pack
                 </Button>
                 <div className={cl.title}>Learn Page</div>
+            </div>
+            <div className={cl.attempts}>
+                <span>number of attempts: </span>
+                {card.shots}
             </div>
             <div className={cl.quTitle}>
                 <span className={cl.qu}> Question: </span>
@@ -106,7 +108,6 @@ const LearnPage = () => {
                         {grades.map((g, i) => (
                             <Button key={'grade-' + i} disabled={isLoading === "loading"}
                                     onClick={() => {
-                                        // @ts-ignore
                                         dispatch(changeGradeTC({grade: i + 1, card_id: card._id}))
                                         onNext()
                                     }}>

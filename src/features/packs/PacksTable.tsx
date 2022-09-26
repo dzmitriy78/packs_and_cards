@@ -15,16 +15,14 @@ import Confirm from "../../utils/ConfirmDialog";
 import {InputText} from "primereact/inputtext";
 import Modal from "../../utils/Modal";
 
-
 const PacksTable = () => {
 
     const dispatch = useDispatch<DispatchType>()
     const cardPacks = useSelector<AppStoreType, CardPacksType[]>(state => state.packs.cardPacks)
     const isLoading = useSelector<AppStoreType, RequestLoadingType>(state => state.app.isLoading)
     const totalCount = useSelector<AppStoreType, number>(state => state.packs.cardPacksTotalCount)
-    const myId = useSelector<AppStoreType, string>(state => state.login.userData._id)
-    const userId = useSelector<AppStoreType, string>(state => state.packs.getPacksParams.user_id)
     const params = useSelector<AppStoreType, GetCardsParamsType>(state => state.cards.getCardParams)
+    const myName = useSelector<AppStoreType, string>(state => state.login.userData.name)
     const navigate = useNavigate()
 
     const [newName, setNewName] = useState("")
@@ -45,7 +43,7 @@ const PacksTable = () => {
                 <Button icon="pi pi-book"
                         className="p-button-rounded p-button-success mr-2"
                         title={"learn"}
-                        disabled={isLoading === "loading"}
+                        disabled={isLoading === "loading" || rowData.cardsCount === 0}
                         onClick={() => {
                             dispatch(getCardsTC({...params, cardsPack_id: rowData._id}))
                             dispatch(setCardsPack(currentPack[0]))
@@ -53,31 +51,38 @@ const PacksTable = () => {
                         }}
                 />
                 {
-                    myId === userId
-                        ? <Modal icon={"pi pi-pencil"}
-                                 className="p-button-rounded p-button-success mr-2"
-                                 title={`Edit pack ${currentPack[0].name}`}
-                                 disabled={isLoading === "loading"}
-                                 callback={() => onUpdatePack(rowData._id)}>
-                            <form>
-                                <span style={{color: "teal", fontWeight: "bold", margin: "5px"}}>Pack name:</span>
-                                <InputText style={{width: "95%"}} id="newName"
-                                           defaultValue={currentPack[0].name}
-                                           onChange={(e) => setNewName(e.target.value)}/>
-                            </form>
-                        </Modal>
-                        : ""
+                    myName === rowData.user_name
+                    && <Modal icon={"pi pi-pencil"}
+                              className="p-button-rounded p-button-success mr-2"
+                              title={`Edit pack ${currentPack[0].name}`}
+                              disabled={isLoading === "loading"}
+                              callback={() => onUpdatePack(rowData._id)}>
+                        <form>
+                            <span style={{color: "teal", fontWeight: "bold", margin: "5px"}}>Pack name:</span>
+                            <InputText style={{width: "95%"}} id="newName"
+                                       defaultValue={currentPack[0].name}
+                                       onChange={(e) => setNewName(e.target.value)}/>
+                        </form>
+                    </Modal>
                 }
                 {
-                    myId === userId
-                        ? <Confirm icon="pi pi-trash"
-                                   className="p-button-rounded p-button-warning"
-                                   title={""}
-                                   message={`Are you sure you want to remove package ${currentPack[0].name}? All card will be deleted`}
-                                   disabled={isLoading === "loading"}
-                                   callback={() => onDeletePack(rowData._id)}
-                        />
-                        : ""
+                    myName === rowData.user_name
+                    && <Confirm icon="pi pi-trash"
+                                className="p-button-rounded p-button-warning"
+                                title={""}
+                                message={
+                                    <>
+                                        <span>Are you sure you want to remove package </span>
+                                        <span style={{fontWeight: "bold"}}>
+                                           {currentPack[0].name}.
+                                       </span>
+                                        <span> All card will be deleted.</span>
+                                    </>
+                                }
+                                disabled={isLoading === "loading"}
+                                callback={() => onDeletePack(rowData._id)}
+                    />
+
                 }
             </div>
         )

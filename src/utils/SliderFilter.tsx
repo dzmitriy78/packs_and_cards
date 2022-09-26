@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Slider} from 'primereact/slider';
+import {Slider, SliderValueType} from 'primereact/slider';
 import {setPacksParamsTC} from "../main/bll/packsReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType, DispatchType} from "../main/bll/store";
@@ -17,12 +17,12 @@ const SliderFilter = () => {
     const max = useSelector<AppStoreType, number>(state => state.packs.maxCardsCount)
     const min = useSelector<AppStoreType, number>(state => state.packs.minCardsCount)
 
-    const [value, setValue] = useState<number | [number, number]>([min, max])
+    const [value, setValue] = useState< SliderValueType>([0, 110])
 
-    // @ts-ignore
-    const [first, second] = value
+
+    const [first, second] = value as Array<number>
     const myParams = {...params, min: first, max: second}
-    const debouncedValue = useDebounce<number | [number, number]>(value, 600)
+    const debouncedValue = useDebounce<SliderValueType>(value, 600)
 
     useEffect(() => {
         dispatch(setPacksParamsTC(myParams))
@@ -36,7 +36,7 @@ const SliderFilter = () => {
                             onChange={(e) => setValue(e.value)} range/>
             </div>
         </div>
-    );
-};
+    )
+}
 
 export default SliderFilter;

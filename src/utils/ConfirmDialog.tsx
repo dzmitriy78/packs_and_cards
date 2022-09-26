@@ -3,7 +3,7 @@ import {ConfirmDialog} from 'primereact/confirmdialog';
 import {Button} from 'primereact/button';
 import {Toast} from 'primereact/toast';
 
-const Confirm: React.FC<ConfirmPropsType> = ({icon, callback, className, title, message, disabled}) => {
+const Confirm: React.FC<ConfirmPropsType> = ({icon, callback, className, title, message , disabled}) => {
     const [visible, setVisible] = useState(false);
     const toast = useRef(null);
 
@@ -41,6 +41,6 @@ type ConfirmPropsType = {
     callback(): void
     className: string
     title: string
-    message: string
+    message: JSX.Element | string
     disabled: boolean
 }
