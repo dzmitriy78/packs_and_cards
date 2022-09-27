@@ -26,13 +26,14 @@ const PacksTable = () => {
     const navigate = useNavigate()
 
     const [newName, setNewName] = useState("")
+    const [newDeckCover, setNewDeckCover] = useState("")
 
     const onDeletePack = (id: string) => {
         dispatch(deletePackTC(id))
     }
     const onUpdatePack = (id: string) => {
-        if (newName)
-            dispatch(updatePackTC(id, newName))
+        if (newName || newDeckCover )
+            dispatch(updatePackTC(id, newName, newDeckCover))
     }
 
     const actionBodyTemplate = (rowData: any) => {
@@ -59,9 +60,16 @@ const PacksTable = () => {
                               callback={() => onUpdatePack(rowData._id)}>
                         <form>
                             <span style={{color: "teal", fontWeight: "bold", margin: "5px"}}>Pack name:</span>
-                            <InputText style={{width: "95%"}} id="newName"
+                            <InputText style={{width: "95%"}}
+                                       id="newName"
                                        defaultValue={currentPack[0].name}
                                        onChange={(e) => setNewName(e.target.value)}/>
+                            <span style={{color: "teal", fontWeight: "bold", margin: "5px"}}>deck Cover:</span>
+                            <InputText style={{width: "95%"}}
+                                       type={"file"}
+                                       id="newDeckCover"
+                                       defaultValue={currentPack[0].deckCover}
+                                       onChange={(e) => setNewDeckCover(e.target.value)}/>
                         </form>
                     </Modal>
                 }
@@ -125,6 +133,13 @@ const PacksTable = () => {
             </div>
         )
     }
+    const coverTemplate = (rowData: any) => {
+        return (
+            <div style={{width: '10vw', overflow: 'hidden', textAlign: "center"}}>
+                {rowData.deckCover}
+            </div>
+        )
+    }
 
     return (
         <div>
@@ -134,6 +149,8 @@ const PacksTable = () => {
                            currentPageReportTemplate="Showing {first} to {last} of {totalRecords}" rows={5}
                            rowsPerPageOptions={[5, 10, 20, 50]}
                            totalRecords={totalCount}>
+                    <Column field="deckCover" header="Cover" body={coverTemplate}
+                            headerStyle={{width: '10w'}} sortable={true}></Column>
                     <Column field="name" header="Name" body={nameTemplate}
                             headerStyle={{width: '25vw'}} sortable={true}></Column>
                     <Column field="cardsCount" body={cardsCountTemplate} headerStyle={{width: '5vw'}}

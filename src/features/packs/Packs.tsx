@@ -23,6 +23,7 @@ const Packs = () => {
     const isAuth = useSelector<AppStoreType, boolean>(state => state.login.isAuth)
 
     const [newPackName, setNewPackName] = useState("")
+    const [deckCover, setDeckCover] = useState("")
 
     useEffect(() => {
         if (!isAuth) {
@@ -32,8 +33,8 @@ const Packs = () => {
     }, [params.packName, params.max, params.min, params.user_id])
 
     const createPack = () => {
-        if (newPackName)
-            dispatch(addPackTC({cardsPack: {name: newPackName}}))
+        if (newPackName || deckCover)
+            dispatch(addPackTC({cardsPack: {name: newPackName, deckCover: deckCover}}))
     }
 
     return (
@@ -53,13 +54,19 @@ const Packs = () => {
                        className={""}
                        disabled={isLoading === "loading"}>
                     <form>
-                         <span className="p-float-label">
-                    <InputText style={{width: "95%"}}
-                               id="name pack"
-                               value={newPackName}
-                               onChange={(e) => setNewPackName(e.target.value)}/>
-                    <label htmlFor="name pack">Name pack</label>
-                        </span>
+                        <label htmlFor="name pack">Name pack</label>
+                        <InputText style={{width: "95%"}}
+                                   id="name pack"
+                                   value={newPackName}
+                                   onChange={(e) => setNewPackName(e.target.value)}/>
+
+                        <label htmlFor="name pack">Deck cover</label>
+                        <InputText style={{width: "95%"}}
+                                   type="file"
+                                   id="deckCover"
+                                   value={deckCover}
+                                   onChange={(e) => setDeckCover(e.target.value)}/>
+
                     </form>
                 </Modal>
             </div>

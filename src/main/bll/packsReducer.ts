@@ -33,9 +33,9 @@ export const removePack = (id: string) => ({
     type: DELETE_PACK,
     id
 }) as const
-export const updatePackName = (id: string, newName: string) => ({
+export const updatePackName = (id: string, newName: string, deckCover: string) => ({
     type: UPDATE_PACK,
-    id, newName
+    id, newName, deckCover
 }) as const
 
 const packsInitialState: packsInitialStateType = {
@@ -84,7 +84,9 @@ const packsReducer = (state = packsInitialState, action: PacksReducerAT): packsI
         case UPDATE_PACK:
             return {
                 ...state,
-                cardPacks: state.cardPacks.map(p => p._id === action.id ? {...p, name: action.newName} : p)
+                cardPacks: state.cardPacks.map(p => p._id === action.id
+                    ? {...p, name: action.newName, deckCover: action.deckCover}
+                    : p)
             }
         default: {
             return state
@@ -127,12 +129,12 @@ export const deletePackTC = (id: string): ThunkType => async (dispatch) => {
         errorHandler(e, dispatch)
     }
 }
-export const updatePackTC = (id: string, newName: string): ThunkType => async (dispatch) => {
+export const updatePackTC = (id: string, newName: string, newDeckCover: string): ThunkType => async (dispatch) => {
     dispatch(setIsLoadingAC('loading'))
     try {
-        const res = await packsAPI.updatePack({cardsPack: {_id: id, name: newName}})
+        const res = await packsAPI.updatePack({cardsPack: {_id: id, name: newName, deckCover: newDeckCover}})
         if (res) {
-            dispatch(updatePackName(res.data.updatedCardsPack._id, res.data.updatedCardsPack.name))
+            dispatch(updatePackName(res.data.updatedCardsPack._id, res.data.updatedCardsPack.name, res.data.updatedCardsPack.deckCover))
         }
         dispatch(setIsLoadingAC('succeeded'))
     } catch (e: any) {

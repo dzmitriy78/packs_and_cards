@@ -101,6 +101,7 @@ type UpdatePacksParamsType = {
     cardsPack: {
         _id: string
         name: string
+        deckCover: string
     }
 }
 type UpdatePackResponseType = {
