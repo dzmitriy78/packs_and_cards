@@ -40,6 +40,11 @@ const Cards = () => {
                         style={{width: "90px"}}
                         onClick={() => navigate(PACKS_PATH)}
                 >Back to packs</Button>
+                <div style={{display: "flex", justifyContent: "center"}}>
+                    {currentPack.deckCover && <img style={{maxWidth: "200px", maxHeight: "200px"}}
+                                                   src={currentPack.deckCover}
+                                                   alt={"cover"}/>}
+                </div>
                 <div className={cl.title}>{`Pack name: ${currentPack.name}`}</div>
                 {
                     myName === currentPack.user_name

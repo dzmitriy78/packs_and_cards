@@ -32,7 +32,7 @@ const PacksTable = () => {
         dispatch(deletePackTC(id))
     }
     const onUpdatePack = (id: string) => {
-        if (newName || newDeckCover )
+        if (newName || newDeckCover)
             dispatch(updatePackTC(id, newName, newDeckCover))
     }
 
@@ -59,17 +59,23 @@ const PacksTable = () => {
                               disabled={isLoading === "loading"}
                               callback={() => onUpdatePack(rowData._id)}>
                         <form>
-                            <span style={{color: "teal", fontWeight: "bold", margin: "5px"}}>Pack name:</span>
+                            <div style={{display: "flex", justifyContent: "center"}}>
+                                {rowData.deckCover && <img style={{maxWidth: "200px", maxHeight: "200px"}}
+                                                           src={rowData.deckCover}
+                                                           alt={"cover"}/>}
+                            </div>
+                            <span style={{color: "teal", fontWeight: "bold", margin: "5px"}}>Select new cover:</span>
+                            <InputText style={{width: "95%"}}
+                                /*  type={"file"}*/
+                                       id="newDeckCover"
+                                       defaultValue={currentPack[0].deckCover}
+                                       onChange={(e) => setNewDeckCover(e.target.value)}/>
+                            <span style={{color: "teal", fontWeight: "bold", margin: "5px"}}>New pack name:</span>
                             <InputText style={{width: "95%"}}
                                        id="newName"
                                        defaultValue={currentPack[0].name}
                                        onChange={(e) => setNewName(e.target.value)}/>
-                            <span style={{color: "teal", fontWeight: "bold", margin: "5px"}}>deck Cover:</span>
-                            <InputText style={{width: "95%"}}
-                                       type={"file"}
-                                       id="newDeckCover"
-                                       defaultValue={currentPack[0].deckCover}
-                                       onChange={(e) => setNewDeckCover(e.target.value)}/>
+
                         </form>
                     </Modal>
                 }
@@ -84,13 +90,12 @@ const PacksTable = () => {
                                         <span style={{fontWeight: "bold"}}>
                                            {currentPack[0].name}.
                                        </span>
-                                        <span> All card will be deleted.</span>
+                                        <div> All card will be deleted.</div>
                                     </>
                                 }
                                 disabled={isLoading === "loading"}
                                 callback={() => onDeletePack(rowData._id)}
                     />
-
                 }
             </div>
         )
@@ -136,7 +141,14 @@ const PacksTable = () => {
     const coverTemplate = (rowData: any) => {
         return (
             <div style={{width: '10vw', overflow: 'hidden', textAlign: "center"}}>
-                {rowData.deckCover}
+                {rowData.deckCover
+                    ? <img style={{maxWidth: "80px", maxHeight: "60px"}} alt={"cover"}
+                           src={rowData.deckCover}
+                    />
+                    : <img style={{maxWidth: "80px", maxHeight: "60px"}} alt={"no cover"}
+                           src={"https://scontent-frt3-1.xx.fbcdn.net/v/t39.30808-6/299913673_425487332892200_2154598179656547659_n.png?_nc_cat=107&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=x8v8WXJxYq0AX9X5nqW&_nc_ht=scontent-frt3-1.xx&oh=00_AT93CYlHuOzWmpeRjwKf3rqRueHuCDveIcE0z5QNgrN6Lg&oe=6339CCA1"}
+                    />
+                }
             </div>
         )
     }
@@ -150,7 +162,7 @@ const PacksTable = () => {
                            rowsPerPageOptions={[5, 10, 20, 50]}
                            totalRecords={totalCount}>
                     <Column field="deckCover" header="Cover" body={coverTemplate}
-                            headerStyle={{width: '10w'}} sortable={true}></Column>
+                            headerStyle={{width: '10w'}}></Column>
                     <Column field="name" header="Name" body={nameTemplate}
                             headerStyle={{width: '25vw'}} sortable={true}></Column>
                     <Column field="cardsCount" body={cardsCountTemplate} headerStyle={{width: '5vw'}}

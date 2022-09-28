@@ -54,19 +54,22 @@ const Packs = () => {
                        className={""}
                        disabled={isLoading === "loading"}>
                     <form>
+                        <div style={{display: "flex", justifyContent: "center"}}>
+                            {deckCover && <img style={{maxWidth: "200px", maxHeight: "200px"}}
+                                               src={deckCover}
+                                               alt={"cover"}/>}
+                        </div>
+                        <label htmlFor="deckCover">Select cover</label>
+                        <InputText style={{width: "95%"}}
+                            /*  type="file"*/
+                                   id="deckCover"
+                                   value={deckCover}
+                                   onChange={(e) => setDeckCover(e.target.value)}/>
                         <label htmlFor="name pack">Name pack</label>
                         <InputText style={{width: "95%"}}
                                    id="name pack"
                                    value={newPackName}
                                    onChange={(e) => setNewPackName(e.target.value)}/>
-
-                        <label htmlFor="name pack">Deck cover</label>
-                        <InputText style={{width: "95%"}}
-                                   type="file"
-                                   id="deckCover"
-                                   value={deckCover}
-                                   onChange={(e) => setDeckCover(e.target.value)}/>
-
                     </form>
                 </Modal>
             </div>
