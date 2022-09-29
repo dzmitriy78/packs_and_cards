@@ -37,14 +37,19 @@ const Modal: React.FC<ModalPropsType> = ({
     const renderFooter = (name: string) => {
         return (
             <div>
-                <Button label="Cancel" icon="pi pi-times" onClick={() => onHide(name)} className="p-button-text"/>
-                <Button label="Save" icon="pi pi-check" autoFocus
+                <Button label="Cancel"
+                        icon="pi pi-times"
+                        onClick={() => onHide(name)}
+                        className="p-button-text"/>
+                <Button label="Save"
+                        icon="pi pi-check"
+                        autoFocus
                         onClick={() => {
                             onHide(name);
                             callback()
                         }}/>
             </div>
-        );
+        )
     }
 
     return (
@@ -55,8 +60,11 @@ const Modal: React.FC<ModalPropsType> = ({
                         onClick={() => onClick('displayResponsive')}
                         className={className}
                         disabled={disabled}/>
-                <Dialog header={title} visible={displayResponsive} onHide={() => onHide('displayResponsive')}
-                        breakpoints={{'960px': '75vw'}} style={{width: '50vw'}}
+                <Dialog header={title}
+                        visible={displayResponsive}
+                        onHide={() => onHide('displayResponsive')}
+                        breakpoints={{'960px': '75vw'}}
+                        style={{width: '50vw'}}
                         footer={renderFooter('displayResponsive')}>
                     {children}
                 </Dialog>
