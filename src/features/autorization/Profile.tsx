@@ -5,13 +5,16 @@ import {LOGIN_PATH, REGISTER_PATH} from "../../main/Routing";
 import {NavLink} from "react-router-dom";
 import {updateUserTC} from "../../main/bll/profileReducer";
 import Loader from "../../main/ui/Loader";
-import {RequestLoadingType} from "../../main/bll/appReducer";
+import {RequestLoadingType, setIsLoadingAC} from "../../main/bll/appReducer";
 import {UserDataType} from "../../main/dal/authAPI";
 import cl from "./../../styles/Profile.module.scss"
 import moment from "moment";
 import {Button} from "primereact/button";
 import {convertToBase64} from "../../utils/convertToBase64";
 import {InputText} from "primereact/inputtext";
+import defaultAva from "./../../Assets/user.png"
+import Message from "../../main/ui/Messages";
+
 
 const Profile = () => {
     const isAuth = useSelector<AppStoreType, boolean>((state) => state.login.isAuth)
@@ -22,6 +25,7 @@ const Profile = () => {
 
     const [editName, setEditName] = useState(false)
     const [newName, setNewName] = useState<string>(userData.name)
+    const [ava, setAva] = useState<string>(userData.avatar)
 
     const changeName: React.ChangeEventHandler<HTMLInputElement> = (e) => {
         setNewName(e.currentTarget.value)
@@ -37,6 +41,7 @@ const Profile = () => {
             const file = e.target.files[0]
             if (file.size < 3000000) {
                 convertToBase64(file, (file64: string) => {
+                    setAva(file64)
                     dispatch(updateUserTC("", file64))
                 })
             } else {
@@ -46,14 +51,21 @@ const Profile = () => {
     }
     const handlePick = () => filePicker.current?.click()
 
+    const errorImgHandler = () => {
+        dispatch(setIsLoadingAC("failed"))
+        setAva(defaultAva)
+    }
+
     return (
         <>
+            {ava === defaultAva && <Message message={'Image is corrupted, choose another'}/>}
             {isLoading === 'loading' && <Loader/>}
             {isAuth
                 ? <div className={cl.rootProfile}>
                     <div>
                         <img style={{maxWidth: "150px"}}
-                             src={userData.avatar}
+                             onError={errorImgHandler}
+                             src={ava}
                              alt={"avatar"}/>
                         <div>
                             <Button label={"Change"}
