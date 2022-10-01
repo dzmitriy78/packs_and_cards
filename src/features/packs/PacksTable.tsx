@@ -6,7 +6,7 @@ import {deletePackTC, updatePackTC} from "../../main/bll/packsReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType, DispatchType} from "../../main/bll/store";
 import {Button} from "primereact/button";
-import {RequestLoadingType} from "../../main/bll/appReducer";
+import {RequestLoadingType, setIsLoadingAC} from "../../main/bll/appReducer";
 import {useNavigate} from "react-router-dom";
 import {CARDS_PATH, LEARN_PATH} from "../../main/Routing";
 import {getCardsTC, setCardsPack} from "../../main/bll/cardsReducer";
@@ -14,6 +14,8 @@ import moment from "moment";
 import Confirm from "../../utils/ConfirmDialog";
 import {InputText} from "primereact/inputtext";
 import Modal from "../../utils/Modal";
+import defaultCover from "../../Assets/defaultCover.png";
+import UploadFileInput from "../../utils/UploadFileInput";
 
 const PacksTable = () => {
 
@@ -28,17 +30,25 @@ const PacksTable = () => {
     const [newName, setNewName] = useState("")
     const [newDeckCover, setNewDeckCover] = useState("")
 
+
     const onDeletePack = (id: string) => {
         dispatch(deletePackTC(id))
     }
     const onUpdatePack = (id: string) => {
         if (newName || newDeckCover)
             dispatch(updatePackTC(id, newName, newDeckCover))
+        setNewName("")
+        setNewDeckCover("")
     }
 
     const actionBodyTemplate = (rowData: any) => {
         const currentPack = cardPacks.filter((c) => c._id === rowData._id)
+        const [isCoverBroken, setIsCoverBroken] = useState<boolean>(false)
 
+        const errorImgHandler = () => {
+            dispatch(setIsLoadingAC("failed"))
+            setIsCoverBroken(true)
+        }
         return (
             <div style={{overflow: 'hidden', textAlign: "center", display: "inline-flex"}}>
                 <Button icon="pi pi-book"
@@ -61,15 +71,19 @@ const PacksTable = () => {
                         <form>
                             <div style={{display: "flex", justifyContent: "center"}}>
                                 {rowData.deckCover && <img style={{maxWidth: "200px", maxHeight: "200px"}}
-                                                           src={rowData.deckCover}
+                                                           onError={errorImgHandler}
+                                                           src={isCoverBroken ? defaultCover : rowData.deckCover}
                                                            alt={"cover"}/>}
                             </div>
                             <span style={{color: "teal", fontWeight: "bold", margin: "5px"}}>Select new cover:</span>
-                            <InputText style={{width: "95%"}}
-                                /*  type={"file"}*/
+                            <UploadFileInput icon={"pi pi-upload"}
+                                             className={"p-button-outlined"}
+                                             callback={setNewDeckCover}
+                                             label={"Select"}/>
+                            {/* <InputText style={{width: "95%"}}
+                                       type={"file"}
                                        id="newDeckCover"
-                                       defaultValue={currentPack[0].deckCover}
-                                       onChange={(e) => setNewDeckCover(e.target.value)}/>
+                                       onChange={onCoverSelect}/>*/}
                             <span style={{color: "teal", fontWeight: "bold", margin: "5px"}}>New pack name:</span>
                             <InputText style={{width: "95%"}}
                                        id="newName"
@@ -100,7 +114,6 @@ const PacksTable = () => {
             </div>
         )
     }
-
     const nameTemplate = (rowData: any) => {
         const currentPack = cardPacks.filter((c) => c._id === rowData._id)
         return (
@@ -116,7 +129,6 @@ const PacksTable = () => {
             </div>
         )
     }
-
     const cardsCountTemplate = (rowData: any) => {
         return (
             <div style={{width: '5vw', overflow: 'hidden', textAlign: "center"}}>
@@ -139,13 +151,20 @@ const PacksTable = () => {
         )
     }
     const coverTemplate = (rowData: any) => {
+        const [isCoverBroken, setIsCoverBroken] = useState<boolean>(false)
+        const errorCoverHandler = () => {
+            setIsCoverBroken(true)
+        }
         return (
             <div style={{width: '10vw', overflow: 'hidden', textAlign: "center"}}>
                 {rowData.deckCover
-                    ? <img style={{maxWidth: "80px", maxHeight: "60px"}} alt={"cover"}
-                           src={rowData.deckCover}
+                    ? <img style={{maxWidth: "80px", maxHeight: "60px"}}
+                           alt={"cover"}
+                           onError={errorCoverHandler}
+                           src={isCoverBroken ? defaultCover : rowData.deckCover}
                     />
-                    : <img style={{maxWidth: "80px", maxHeight: "60px"}} alt={"no cover"}
+                    : <img style={{maxWidth: "80px", maxHeight: "60px"}}
+                           alt={"no cover"}
                            src={"https://scontent-frt3-1.xx.fbcdn.net/v/t39.30808-6/299913673_425487332892200_2154598179656547659_n.png?_nc_cat=107&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=x8v8WXJxYq0AX9X5nqW&_nc_ht=scontent-frt3-1.xx&oh=00_AT93CYlHuOzWmpeRjwKf3rqRueHuCDveIcE0z5QNgrN6Lg&oe=6339CCA1"}
                     />
                 }
@@ -179,4 +198,4 @@ const PacksTable = () => {
     )
 }
 
-export default PacksTable;
+export default PacksTable

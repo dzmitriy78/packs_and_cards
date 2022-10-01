@@ -13,6 +13,7 @@ import Modal from "../../utils/Modal";
 import {InputText} from "primereact/inputtext";
 import {RequestLoadingType} from "../../main/bll/appReducer";
 import Loader from "../../main/ui/Loader";
+import UploadFileInput from "../../utils/UploadFileInput";
 
 const Packs = () => {
 
@@ -35,6 +36,8 @@ const Packs = () => {
     const createPack = () => {
         if (newPackName || deckCover)
             dispatch(addPackTC({cardsPack: {name: newPackName, deckCover: deckCover}}))
+        setNewPackName("")
+        setDeckCover("")
     }
 
     return (
@@ -53,6 +56,7 @@ const Packs = () => {
                        icon={"pi pi-plus-circle"}
                        className={""}
                        disabled={isLoading === "loading"}>
+
                     <form>
                         <div style={{display: "flex", justifyContent: "center"}}>
                             {deckCover && <img style={{maxWidth: "200px", maxHeight: "200px"}}
@@ -60,11 +64,12 @@ const Packs = () => {
                                                alt={"cover"}/>}
                         </div>
                         <label htmlFor="deckCover">Select cover</label>
-                        <InputText style={{width: "95%"}}
-                            /*  type="file"*/
+                        <UploadFileInput callback={setDeckCover} icon={"pi pi-upload"} className={"p-button-outlined"}
+                                         label={"Select"}/>
+                        {/*<InputText style={{width: "95%"}}
+                                   type={"file"}
                                    id="deckCover"
-                                   value={deckCover}
-                                   onChange={(e) => setDeckCover(e.target.value)}/>
+                                   onChange={onCoverSelect}/>*/}
                         <label htmlFor="name pack">Name pack</label>
                         <InputText style={{width: "95%"}}
                                    id="name pack"
@@ -79,4 +84,4 @@ const Packs = () => {
     )
 }
 
-export default Packs;
+export default Packs

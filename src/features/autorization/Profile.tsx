@@ -1,4 +1,4 @@
-import React, {useRef, useState} from 'react';
+import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType, DispatchType} from "../../main/bll/store";
 import {LOGIN_PATH, REGISTER_PATH} from "../../main/Routing";
@@ -9,11 +9,10 @@ import {RequestLoadingType, setIsLoadingAC} from "../../main/bll/appReducer";
 import {UserDataType} from "../../main/dal/authAPI";
 import cl from "./../../styles/Profile.module.scss"
 import moment from "moment";
-import {Button} from "primereact/button";
-import {convertToBase64} from "../../utils/convertToBase64";
 import {InputText} from "primereact/inputtext";
 import defaultAva from "./../../Assets/user.png"
 import Message from "../../main/ui/Messages";
+import UploadFileInput from "../../utils/UploadFileInput";
 
 
 const Profile = () => {
@@ -21,7 +20,6 @@ const Profile = () => {
     const userData = useSelector<AppStoreType, UserDataType>((state) => state.login.userData)
     const isLoading = useSelector<AppStoreType, RequestLoadingType>((state) => state.app.isLoading)
     const dispatch = useDispatch<DispatchType>()
-    const filePicker = useRef<HTMLInputElement>(null)
 
     const [editName, setEditName] = useState(false)
     const [newName, setNewName] = useState<string>(userData.name)
@@ -36,20 +34,9 @@ const Profile = () => {
             dispatch(updateUserTC(newName, ""))
     }
 
-    const onAvatarSelect: React.ChangeEventHandler<HTMLInputElement> = (e) => {
-        if (e.target.files?.length) {
-            const file = e.target.files[0]
-            if (file.size < 3000000) {
-                convertToBase64(file, (file64: string) => {
-                    setAva(file64)
-                    dispatch(updateUserTC("", file64))
-                })
-            } else {
-                alert("File is too big")
-            }
-        }
+    const dispatchHandler = (file64: string) => {
+        dispatch(updateUserTC("", file64))
     }
-    const handlePick = () => filePicker.current?.click()
 
     const errorImgHandler = () => {
         dispatch(setIsLoadingAC("failed"))
@@ -67,17 +54,11 @@ const Profile = () => {
                              onError={errorImgHandler}
                              src={ava}
                              alt={"avatar"}/>
-                        <div>
-                            <Button label={"Change"}
-                                    icon={"pi pi-upload"}
-                                    className="p-button-outlined"
-                                    onClick={handlePick}>
-                            </Button>
-                            <input className={cl.hidden} type={"file"}
-                                   onChange={onAvatarSelect}
-                                   ref={filePicker}
-                                   accept={"image/*,.png, .jpg, .gif, .web"}/>
-                        </div>
+                        <UploadFileInput icon={"pi pi-upload"}
+                                         className={"p-button-outlined"}
+                                         dispatch={dispatchHandler}
+                                         label={"Change"}
+                                         callback={setAva}/>
                     </div>
                     <div className={cl.profile}
                          title={"double click to edit"}
@@ -108,7 +89,7 @@ const Profile = () => {
                     <NavLink to={REGISTER_PATH}>Register</NavLink>
                 </div>
             }
-        </>);
-};
+        </>)
+}
 
-export default Profile;
+export default Profile
