@@ -76,6 +76,10 @@ const CardsList = () => {
     const questionTemplate = (rowData: any) => {
         return (
             <div style={{width: '20vw', overflow: 'hidden'}}>
+                <img style={{maxWidth: "80px", maxHeight: "60px"}}
+                     alt={"cover"}
+                     src={rowData.question}
+                />
                 {rowData.question}
             </div>
         )
@@ -83,7 +87,12 @@ const CardsList = () => {
 
     const answerTemplate = (rowData: any) => {
         return (
+
             <div style={{width: '20vw', overflow: 'hidden', textAlign: "center"}}>
+                <img style={{maxWidth: "80px", maxHeight: "60px"}}
+                     alt={"cover"}
+                     src={rowData.answer}
+                />
                 {rowData.answer}
             </div>
         )

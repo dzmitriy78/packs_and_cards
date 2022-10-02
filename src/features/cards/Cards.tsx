@@ -13,6 +13,8 @@ import {InputText} from "primereact/inputtext";
 import {InputTextarea} from "primereact/inputtextarea";
 import {RequestLoadingType} from "../../main/bll/appReducer";
 import Loader from "../../main/ui/Loader";
+import UploadFileWithBase64 from "../../utils/UploadFileWithBase64";
+import defaultCover from "../../Assets/defaultCover.png";
 
 const Cards = () => {
     const dispatch = useDispatch<DispatchType>()
@@ -30,7 +32,10 @@ const Cards = () => {
         if (question)
             dispatch(createCardTC({card: {cardsPack_id: currentPack._id, question, answer}}))
     }
-
+    const [isCoverBroken, setIsCoverBroken] = useState<boolean>(false)
+    const errorCoverHandler = () => {
+        setIsCoverBroken(true)
+    }
     return (
         <>
             {isLoading === 'loading' && <Loader/>}
@@ -42,7 +47,8 @@ const Cards = () => {
                 >Back to packs</Button>
                 <div style={{display: "flex", justifyContent: "center"}}>
                     {currentPack.deckCover && <img style={{maxWidth: "200px", maxHeight: "200px"}}
-                                                   src={currentPack.deckCover}
+                                                   onError={errorCoverHandler}
+                                                   src={isCoverBroken ? defaultCover : currentPack.deckCover}
                                                    alt={"cover"}/>}
                 </div>
                 <div className={cl.title}>{`Pack name: ${currentPack.name}`}</div>
@@ -56,11 +62,13 @@ const Cards = () => {
                                  disabled={isLoading === "loading"}>
                             <form>
                                 <span className="p-float-label">
+                                    <UploadFileWithBase64 cb={setQuestion}/>
                                     <InputText style={{width: "95%", margin: "5px"}} id="question"
                                                value={question}
                                                onChange={(e) => setQuestion(e.target.value)}/>
                                     <label htmlFor="question">question</label>
                                 </span>
+                                <UploadFileWithBase64 cb={setAnswer}/>
                                 <InputTextarea style={{width: "95%", margin: "5px"}}
                                                value={answer}
                                                placeholder={"answer"}

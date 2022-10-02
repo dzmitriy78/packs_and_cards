@@ -15,7 +15,7 @@ import Confirm from "../../utils/ConfirmDialog";
 import {InputText} from "primereact/inputtext";
 import Modal from "../../utils/Modal";
 import defaultCover from "../../Assets/defaultCover.png";
-import UploadFileInput from "../../utils/UploadFileInput";
+import UploadFileWithBase64 from "../../utils/UploadFileWithBase64";
 
 const PacksTable = () => {
 
@@ -76,14 +76,7 @@ const PacksTable = () => {
                                                            alt={"cover"}/>}
                             </div>
                             <span style={{color: "teal", fontWeight: "bold", margin: "5px"}}>Select new cover:</span>
-                            <UploadFileInput icon={"pi pi-upload"}
-                                             className={"p-button-outlined"}
-                                             callback={setNewDeckCover}
-                                             label={"Select"}/>
-                            {/* <InputText style={{width: "95%"}}
-                                       type={"file"}
-                                       id="newDeckCover"
-                                       onChange={onCoverSelect}/>*/}
+                            <UploadFileWithBase64 cb={setNewDeckCover}/>
                             <span style={{color: "teal", fontWeight: "bold", margin: "5px"}}>New pack name:</span>
                             <InputText style={{width: "95%"}}
                                        id="newName"
@@ -156,7 +149,7 @@ const PacksTable = () => {
             setIsCoverBroken(true)
         }
         return (
-            <div style={{width: '10vw', overflow: 'hidden', textAlign: "center"}}>
+            <div style={{width: '10vw', height: "60px", overflow: 'hidden', textAlign: "center"}}>
                 {rowData.deckCover
                     ? <img style={{maxWidth: "80px", maxHeight: "60px"}}
                            alt={"cover"}

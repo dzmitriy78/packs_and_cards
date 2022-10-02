@@ -12,7 +12,8 @@ import moment from "moment";
 import {InputText} from "primereact/inputtext";
 import defaultAva from "./../../Assets/user.png"
 import Message from "../../main/ui/Messages";
-import UploadFileInput from "../../utils/UploadFileInput";
+import UploadFileWithBase64 from "../../utils/UploadFileWithBase64";
+import {Button} from "primereact/button";
 
 
 const Profile = () => {
@@ -22,6 +23,7 @@ const Profile = () => {
     const dispatch = useDispatch<DispatchType>()
 
     const [editName, setEditName] = useState(false)
+    const [editAva, setEditAva] = useState(false)
     const [newName, setNewName] = useState<string>(userData.name)
     const [ava, setAva] = useState<string>(userData.avatar)
 
@@ -36,6 +38,7 @@ const Profile = () => {
 
     const dispatchHandler = (file64: string) => {
         dispatch(updateUserTC("", file64))
+        setEditAva(false)
     }
 
     const errorImgHandler = () => {
@@ -54,11 +57,13 @@ const Profile = () => {
                              onError={errorImgHandler}
                              src={ava}
                              alt={"avatar"}/>
-                        <UploadFileInput icon={"pi pi-upload"}
-                                         className={"p-button-outlined"}
-                                         dispatch={dispatchHandler}
-                                         label={"Change"}
-                                         callback={setAva}/>
+                        <Button icon={"pi pi-pencil"}
+                                title={"change avatar"}
+                                style={{marginLeft: 10, maxWidth: 27, maxHeight: 27}}
+                                className="p-button-rounded p-button-outlined"
+                                onClick={() => setEditAva(!editAva)}/>
+                        {editAva && <UploadFileWithBase64 dispatch={dispatchHandler}
+                                                          cb={setAva}/>}
                     </div>
                     <div className={cl.profile}
                          title={"double click to edit"}

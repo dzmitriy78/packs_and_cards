@@ -53,8 +53,8 @@ const Modal: React.FC<ModalPropsType> = ({
     }
 
     return (
-        <div className="dialog-demo">
-            <div className="card">
+        <div className="dialog-demo" >
+            <div className="card" >
                 <Button label={titleBtn}
                         icon={icon}
                         onClick={() => onClick('displayResponsive')}
@@ -64,7 +64,7 @@ const Modal: React.FC<ModalPropsType> = ({
                         visible={displayResponsive}
                         onHide={() => onHide('displayResponsive')}
                         breakpoints={{'960px': '75vw'}}
-                        style={{width: '50vw'}}
+                        style={{width:"40vw", overflow: "hidden"}}
                         footer={renderFooter('displayResponsive')}>
                     {children}
                 </Dialog>

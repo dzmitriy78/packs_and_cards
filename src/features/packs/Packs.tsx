@@ -13,7 +13,7 @@ import Modal from "../../utils/Modal";
 import {InputText} from "primereact/inputtext";
 import {RequestLoadingType} from "../../main/bll/appReducer";
 import Loader from "../../main/ui/Loader";
-import UploadFileInput from "../../utils/UploadFileInput";
+import UploadFileWithBase64 from "../../utils/UploadFileWithBase64";
 
 const Packs = () => {
 
@@ -24,7 +24,7 @@ const Packs = () => {
     const isAuth = useSelector<AppStoreType, boolean>(state => state.login.isAuth)
 
     const [newPackName, setNewPackName] = useState("")
-    const [deckCover, setDeckCover] = useState("")
+    const [deckCover, setDeckCover] = useState("https://scontent-frt3-1.xx.fbcdn.net/v/t39.30808-6/299913673_425487332892200_2154598179656547659_n.png?_nc_cat=107&ccb=1-7&_nc_sid=09cbfe&_nc_ohc=x8v8WXJxYq0AX9X5nqW&_nc_ht=scontent-frt3-1.xx&oh=00_AT93CYlHuOzWmpeRjwKf3rqRueHuCDveIcE0z5QNgrN6Lg&oe=6339CCA1")
 
     useEffect(() => {
         if (!isAuth) {
@@ -34,8 +34,8 @@ const Packs = () => {
     }, [params.packName, params.max, params.min, params.user_id])
 
     const createPack = () => {
-        if (newPackName || deckCover)
-            dispatch(addPackTC({cardsPack: {name: newPackName, deckCover: deckCover}}))
+        if (newPackName)
+            dispatch(addPackTC({cardsPack: {name: newPackName, deckCover}}))
         setNewPackName("")
         setDeckCover("")
     }
@@ -64,12 +64,7 @@ const Packs = () => {
                                                alt={"cover"}/>}
                         </div>
                         <label htmlFor="deckCover">Select cover</label>
-                        <UploadFileInput callback={setDeckCover} icon={"pi pi-upload"} className={"p-button-outlined"}
-                                         label={"Select"}/>
-                        {/*<InputText style={{width: "95%"}}
-                                   type={"file"}
-                                   id="deckCover"
-                                   onChange={onCoverSelect}/>*/}
+                        <UploadFileWithBase64 cb={setDeckCover}/>
                         <label htmlFor="name pack">Name pack</label>
                         <InputText style={{width: "95%"}}
                                    id="name pack"

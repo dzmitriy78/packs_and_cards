@@ -6,7 +6,7 @@ const UploadFileInput: React.FC<UploadFileInputPropsType> = ({
                                                                  icon,
                                                                  className,
                                                                  dispatch,
-                                                                 callback
+                                                                 cb
                                                              }) => {
 
     const filePicker = useRef<HTMLInputElement>(null)
@@ -26,7 +26,7 @@ const UploadFileInput: React.FC<UploadFileInputPropsType> = ({
             const file = e.target.files[0]
             if (file.size < 3000000) {
                 convertToBase64(file, (file64: string) => {
-                    callback(file64)
+                    cb(file64)
                     if (dispatch) {
                         dispatch(file64)
                     }
@@ -59,6 +59,6 @@ type UploadFileInputPropsType = {
     icon: string
     className: string
     onChange?: ChangeEventHandler<HTMLInputElement>
-    callback(file64: string): void
+    cb(file64: string): void
     dispatch?(file64: string): void
 }
