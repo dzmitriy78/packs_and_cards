@@ -94,6 +94,10 @@ const PacksTable = () => {
                                 message={
                                     <>
                                         <span>Are you sure you want to remove package </span>
+                                        {rowData.deckCover && <img style={{maxWidth: "80px", maxHeight: "60px"}}
+                                                                   onError={errorImgHandler}
+                                                                   src={isCoverBroken ? defaultCover : rowData.deckCover}
+                                                                   alt={"cover1"}/>}
                                         <span style={{fontWeight: "bold"}}>
                                            {currentPack[0].name}.
                                        </span>

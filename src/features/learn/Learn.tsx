@@ -89,7 +89,13 @@ const LearnPage = () => {
             </div>
             <div className={cl.quTitle}>
                 <span className={cl.qu}> Question: </span>
-                <span className={cl.ans}>{card.question}</span>
+                {card.question.includes("data:image")
+                    ? <img style={{maxWidth: "100px", maxHeight: "100px"}}
+                           alt={"question"}
+                           src={card.question}
+                    />
+                    : <span className={cl.ans}>{card.question}</span>
+                }
             </div>
             <div>
                 <Button style={{fontSize: "30px"}}
@@ -102,7 +108,13 @@ const LearnPage = () => {
                 <>
                     <div className={cl.quTitle}>
                         <span className={cl.qu}>  Answer: </span>
-                        <span className={cl.ans}>{card.answer}</span>
+                        {card.answer.includes("data:image")
+                            ? <img style={{maxWidth: "100px", maxHeight: "100px"}}
+                                   alt={"answer"}
+                                   src={card.answer}
+                            />
+                            : <span className={cl.ans}>{card.answer}</span>
+                        }
                     </div>
                     <div className={cl.grade}>
                         {grades.map((g, i) => (

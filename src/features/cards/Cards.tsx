@@ -31,6 +31,8 @@ const Cards = () => {
     const createCard = () => {
         if (question)
             dispatch(createCardTC({card: {cardsPack_id: currentPack._id, question, answer}}))
+        setQuestion("")
+        setAnswer("")
     }
     const [isCoverBroken, setIsCoverBroken] = useState<boolean>(false)
     const errorCoverHandler = () => {
@@ -61,21 +63,23 @@ const Cards = () => {
                                  className={""}
                                  disabled={isLoading === "loading"}>
                             <form>
-                                <span className="p-float-label">
-                                    <UploadFileWithBase64 cb={setQuestion}/>
-                                    <InputText style={{width: "95%", margin: "5px"}} id="question"
-                                               value={question}
-                                               onChange={(e) => setQuestion(e.target.value)}/>
-                                    <label htmlFor="question">question</label>
+                                <label htmlFor="question">Question</label>
+                                <span>
+                                        <InputText style={{width: "95%", margin: "5px"}}
+                                                   id="question"
+                                                   value={question}
+                                                   onChange={(e) => setQuestion(e.target.value)}/>
+                                    <span>Upload an image?</span><UploadFileWithBase64 cb={setQuestion}/>
                                 </span>
-                                <UploadFileWithBase64 cb={setAnswer}/>
+                                <label htmlFor="answer">Answer</label>
+
                                 <InputTextarea style={{width: "95%", margin: "5px"}}
                                                value={answer}
-                                               placeholder={"answer"}
                                                onChange={(e) => setAnswer(e.target.value)}
                                                rows={5}
                                                cols={30}
                                                autoResize/>
+                                <span>Upload an image?</span><UploadFileWithBase64 cb={setAnswer}/>
                             </form>
                         </Modal>
                         : ""

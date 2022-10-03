@@ -12,6 +12,7 @@ import Confirm from "../../utils/ConfirmDialog";
 import Modal from "../../utils/Modal";
 import {InputText} from "primereact/inputtext";
 import {InputTextarea} from "primereact/inputtextarea";
+import UploadFileWithBase64 from "../../utils/UploadFileWithBase64";
 
 const CardsList = () => {
     const dispatch = useDispatch<DispatchType>()
@@ -47,14 +48,16 @@ const CardsList = () => {
                             <InputText style={{width: "95%", margin: "5px"}}
                                        defaultValue={currentCard[0].question}
                                        onChange={(e) => setNewQuestion(e.target.value)}/>
+                            <span>Upload an image?</span><UploadFileWithBase64 cb={setNewQuestion}/>
 
                             <span style={{color: "teal", fontWeight: "bold", margin: "5px"}}>Answer:</span>
                             <InputTextarea style={{width: "95%", margin: "5px"}}
-                                           defaultValue={currentCard[0].answer}
+                                           value={currentCard[0].answer}
                                            onChange={(e) => setNewAnswer(e.target.value)}
                                            rows={5}
                                            cols={30}
                                            autoResize/>
+                            <span>Upload an image?</span><UploadFileWithBase64 cb={setNewAnswer}/>
                         </form>
                     </Modal>
                     : ""
@@ -74,28 +77,34 @@ const CardsList = () => {
     }
 
     const questionTemplate = (rowData: any) => {
-        return (
-            <div style={{width: '20vw', overflow: 'hidden'}}>
-                <img style={{maxWidth: "80px", maxHeight: "60px"}}
-                     alt={"cover"}
-                     src={rowData.question}
-                />
-                {rowData.question}
-            </div>
-        )
+        if (rowData.question.includes("data:image")) {
+            return (
+                <div style={{width: '20vw', overflow: 'hidden', textAlign: "center"}}>
+                    <img style={{maxWidth: "80px", maxHeight: "60px"}}
+                         alt={"question1"}
+                         src={rowData.question}
+                    />
+                </div>)
+        } else {
+            return (
+                <div style={{width: '20vw', overflow: 'hidden', textAlign: "center"}}>
+                    {rowData.question}
+                </div>
+            )
+        }
     }
 
     const answerTemplate = (rowData: any) => {
-        return (
-
-            <div style={{width: '20vw', overflow: 'hidden', textAlign: "center"}}>
+        return rowData.answer.includes("data:image")
+            ? <div style={{width: '20vw', overflow: 'hidden', textAlign: "center"}}>
                 <img style={{maxWidth: "80px", maxHeight: "60px"}}
-                     alt={"cover"}
+                     alt={"answer1"}
                      src={rowData.answer}
                 />
+            </div>
+            : <div style={{width: '20vw', overflow: 'hidden', textAlign: "center"}}>
                 {rowData.answer}
             </div>
-        )
     }
     const updatedTemplate = (rowData: any) => {
         return (
