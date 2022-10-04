@@ -10,7 +10,7 @@ import {UserDataType} from "../../main/dal/authAPI";
 import cl from "./../../styles/Profile.module.scss"
 import moment from "moment";
 import {InputText} from "primereact/inputtext";
-import defaultAva from "./../../Assets/user.png"
+import defaultAva from "../../assets/user.png"
 import Message from "../../main/ui/Messages";
 import UploadFileWithBase64 from "../../utils/UploadFileWithBase64";
 import {Button} from "primereact/button";
@@ -53,7 +53,7 @@ const Profile = () => {
             {isAuth
                 ? <div className={cl.rootProfile}>
                     <div>
-                        <img style={{maxWidth: "150px"}}
+                        <img className={cl.avatar}
                              onError={errorImgHandler}
                              src={ava}
                              alt={"avatar"}/>
@@ -79,17 +79,17 @@ const Profile = () => {
                                                     defaultValue={userData.name}
                             />}
                         </div>
-                        <span>e-mail: </span>
+                        <span>E-mail: </span>
                         <div className={cl.value}>{userData.email}</div>
-                        <span>created: </span>
+                        <span>Created: </span>
                         <div className={cl.value}>
                             {moment(userData.created).format("DD.MM.YYYY  HH:mm")}
                         </div>
-                        <span>packs count: </span>
+                        <span>Packs count: </span>
                         <div className={cl.value}>{userData.publicCardPacksCount}</div>
                     </div>
                 </div>
-                : <div>Profile is empty.<br/> <span>Please </span>
+                : <div className={cl.description}>Profile is empty.<br/> <span>Please </span>
                     <NavLink to={LOGIN_PATH}>Log in</NavLink> <span>or </span>
                     <NavLink to={REGISTER_PATH}>Register</NavLink>
                 </div>

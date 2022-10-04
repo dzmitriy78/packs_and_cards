@@ -4,6 +4,10 @@
   align-items: center;
   font-size: 24px;
   margin: 20px;
+  .avatar {
+    max-width: 15vw;
+    border-radius: 50%;
+  }
 
   .hidden {
     opacity: 0;

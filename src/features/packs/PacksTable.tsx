@@ -14,7 +14,7 @@ import moment from "moment";
 import Confirm from "../../utils/ConfirmDialog";
 import {InputText} from "primereact/inputtext";
 import Modal from "../../utils/Modal";
-import defaultCover from "../../Assets/defaultCover.png";
+import defaultCover from "../../assets/defaultCover.png";
 import UploadFileWithBase64 from "../../utils/UploadFileWithBase64";
 
 const PacksTable = () => {

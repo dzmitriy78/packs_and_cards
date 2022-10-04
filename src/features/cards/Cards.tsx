@@ -14,7 +14,7 @@ import {InputTextarea} from "primereact/inputtextarea";
 import {RequestLoadingType} from "../../main/bll/appReducer";
 import Loader from "../../main/ui/Loader";
 import UploadFileWithBase64 from "../../utils/UploadFileWithBase64";
-import defaultCover from "../../Assets/defaultCover.png";
+import defaultCover from "../../assets/defaultCover.png";
 
 const Cards = () => {
     const dispatch = useDispatch<DispatchType>()
@@ -67,14 +67,18 @@ const Cards = () => {
                                 <span>
                                         <InputText style={{width: "95%", margin: "5px"}}
                                                    id="question"
-                                                   value={question}
+                                                   value={question.includes("data:image")
+                                                       ? "*image*"
+                                                       : question}
                                                    onChange={(e) => setQuestion(e.target.value)}/>
                                     <span>Upload an image?</span><UploadFileWithBase64 cb={setQuestion}/>
                                 </span>
                                 <label htmlFor="answer">Answer</label>
 
                                 <InputTextarea style={{width: "95%", margin: "5px"}}
-                                               value={answer}
+                                               value={answer.includes("data:image")
+                                                   ? "*image*"
+                                                   : answer}
                                                onChange={(e) => setAnswer(e.target.value)}
                                                rows={5}
                                                cols={30}

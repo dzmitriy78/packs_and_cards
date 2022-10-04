@@ -48,27 +48,27 @@ const Login = () => {
         {isAuth && <Welcome/>}
         {!isAuth &&
             <div>
-                <div>Please enter your login and password or <br/>
+                <div className={cl.description}>Please enter your e-mail and password or <br/>
                     <NavLink to={REGISTER_PATH}>Register</NavLink>
                 </div>
                 <form className={cl.form} onSubmit={formik.handleSubmit}>
-                    <InputText
-                        type={"email"}
-                        placeholder="Email"
-                        {...formik.getFieldProps("email")}
+                    <label className={cl.description}>E-mail:</label>
+                    <InputText className={cl.input}
+                               type={"email"}
+                               {...formik.getFieldProps("email")}
                     />
                     {formik.touched.email && formik.errors.email
                         ? <div style={{color: "red"}}>{formik.errors.email}</div>
                         : null}
-                    <Password
-                        placeholder="Password"
-                        toggleMask
-                        {...formik.getFieldProps("password")}
+                    <label className={cl.description}>Password:</label>
+                    <Password className={cl.input}
+                              toggleMask
+                              {...formik.getFieldProps("password")}
                     />
                     {formik.touched.password && formik.errors.password
                         ? <div style={{color: "red"}}>{formik.errors.password}</div>
                         : null}
-                    <label> Remember me </label>
+                    <label className={cl.description}> Remember me </label>
                     <Checkbox inputId="binary"
                               type={"checkbox"}
                               {...formik.getFieldProps("rememberMe")}
@@ -76,7 +76,7 @@ const Login = () => {
                     />
                     <Button type={'submit'} className={cl.button} disabled={isLoading === 'loading'}>Sign in</Button>
                 </form>
-                <div>Forgot your password? <br/>
+                <div className={cl.description}>Forgot your password? <br/>
                     <NavLink to={FORGOT_PATH}>Restore password</NavLink>
                 </div>
             </div>

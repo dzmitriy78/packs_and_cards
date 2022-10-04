@@ -10,6 +10,7 @@ import Loader from "../../main/ui/Loader";
 import {RequestLoadingType} from "../../main/bll/appReducer";
 import {InputText} from "primereact/inputtext";
 import {Button} from "primereact/button";
+import cl from "../../styles/Login.module.scss";
 
 const Forgot = () => {
 
@@ -41,16 +42,17 @@ const Forgot = () => {
     }, 4000)
     return <>
         {isLoading === 'loading' && <Loader/>}
-        {info && <div>Password recovery information has been sent to the email address provided</div>}
+        {info && <div className={cl.description}>Password recovery information has been sent to the email address
+            provided</div>}
 
         {!info &&
             <div>
-                <div>To recovery password, enter your e-mail</div>
+                <div className={cl.description}>To recovery password, enter your e-mail</div>
                 <form className={style.form} onSubmit={formik.handleSubmit}>
-                    <InputText
-                        type={"email"}
-                        placeholder="Email"
-                        {...formik.getFieldProps("email")}
+                    <label className={cl.description}>E-mail:</label>
+                    <InputText className={cl.input}
+                               type={"email"}
+                               {...formik.getFieldProps("email")}
                     />
                     {formik.touched.email && formik.errors.email ?
                         <div style={{color: "red"}}>{formik.errors.email}</div> : null}

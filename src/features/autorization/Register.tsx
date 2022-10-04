@@ -35,26 +35,28 @@ const Register: React.FC = () => {
         },
         onSubmit: (values) => {
             dispatch(registerTC(values))
-            /* navigate("/profile")*/
+            navigate("/profile")
         }
     })
 
     return <div>
         {isLoading === 'loading' && <Loader/>}
-        <div>To register, enter your e-mail <br/>and create a password <br/>(at least 7 characters)</div>
+        <div className={cl.description}>To register, enter your e-mail
+            <br/>and create a password <br/>(at least 7 characters)
+        </div>
         <form className={cl.form} onSubmit={formik.handleSubmit}>
-            <InputText
-                type={"email"}
-                placeholder="Email"
-                {...formik.getFieldProps("email")}
+            <label className={cl.description}>E-mail:</label>
+            <InputText className={cl.input}
+                       type={"email"}
+                       {...formik.getFieldProps("email")}
             />
             {formik.touched.email && formik.errors.email
                 ? <div style={{color: "red"}}>{formik.errors.email}</div>
                 : null}
-            <Password
-                placeholder="Password"
-                toggleMask
-                {...formik.getFieldProps("password")}
+            <label className={cl.description}>Password:</label>
+            <Password className={cl.input}
+                      toggleMask
+                      {...formik.getFieldProps("password")}
             />
             {formik.touched.password && formik.errors.password
                 ? <div style={{color: "red"}}>{formik.errors.password}</div>

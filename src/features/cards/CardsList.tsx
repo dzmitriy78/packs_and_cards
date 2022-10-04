@@ -46,13 +46,17 @@ const CardsList = () => {
                         <form>
                             <span style={{color: "teal", fontWeight: "bold", margin: "5px"}}>Question:</span>
                             <InputText style={{width: "95%", margin: "5px"}}
-                                       defaultValue={currentCard[0].question}
+                                       defaultValue={currentCard[0].question.includes("data:image")
+                                           ? "*image*"
+                                           : currentCard[0].question}
                                        onChange={(e) => setNewQuestion(e.target.value)}/>
                             <span>Upload an image?</span><UploadFileWithBase64 cb={setNewQuestion}/>
 
                             <span style={{color: "teal", fontWeight: "bold", margin: "5px"}}>Answer:</span>
                             <InputTextarea style={{width: "95%", margin: "5px"}}
-                                           value={currentCard[0].answer}
+                                           value={currentCard[0].answer.includes("data:image")
+                                               ? "*image*"
+                                               : currentCard[0].answer}
                                            onChange={(e) => setNewAnswer(e.target.value)}
                                            rows={5}
                                            cols={30}

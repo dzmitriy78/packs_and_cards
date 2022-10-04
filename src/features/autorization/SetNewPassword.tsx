@@ -2,7 +2,7 @@ import React from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType, DispatchType} from "../../main/bll/store";
 import {useFormik} from "formik";
-import style from "../../styles/Login.module.scss";
+import cl from "../../styles/Login.module.scss";
 import {setNewPasswordTC} from "../../main/bll/setNewPasswordReducer";
 import Loader from "../../main/ui/Loader";
 import {useNavigate, useParams} from "react-router-dom";
@@ -48,8 +48,8 @@ const SetNewPassword = () => {
     return <>
         {isLoading === 'loading' && <Loader/>}
 
-        <div>To restore access, enter a new password</div>
-        <form className={style.form} onSubmit={formik.handleSubmit}>
+        <div className={cl.description}>To restore access, enter a new password</div>
+        <form className={cl.form} onSubmit={formik.handleSubmit}>
             <input
                 type={"password"}
                 placeholder="set new password"
@@ -58,14 +58,14 @@ const SetNewPassword = () => {
             />
             {formik.touched.password && formik.errors.password ?
                 <div style={{color: "red"}}>{formik.errors.password}</div> : null}
-            <label>Show Password</label>
+            <label className={cl.description}>Show Password</label>
             <input type="checkbox" onClick={togglePassword}/>
             <input
                 type={"hidden"}
                 placeholder="set token"
                 {...formik.getFieldProps("resetPasswordToken")}
             />
-            <button type={'submit'} className={style.button} disabled={isLoading === 'loading'}>Send</button>
+            <button type={'submit'} className={cl.button} disabled={isLoading === 'loading'}>Send</button>
         </form>
     </>
 }

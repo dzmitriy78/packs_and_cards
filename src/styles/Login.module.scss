@@ -1,19 +1,44 @@
+.description {
+  margin-top: 10px;
+  font-size: 20px;
+  font-style: italic;
+}
+
 .form {
   display: flex;
-  margin: 100px auto 0;
+  margin: 40px auto 0;
   width: 300px;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   @media screen and (max-width: 624px) {
+    width: 70%;
+  }
+
+  .input {
+    position: relative;
+    display: inline-flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    margin: 10px 0 10px 0;
     width: 90%;
   }
 
-  & input{
-    margin: 10px 0 0 0;
-  }
   .button {
     margin: 20px 0 10px 0;
     font-size: 18px;
   }
+
+}
+
+.back {
+  background-image: url("../assets/Education-Wallpaper.jpg");
+  background-repeat: round no-repeat;
+  height: 100vh;
+}
+
+.welcomeTitle {
+  padding-top: 50px;
+  font-size: 3rem;
+  color: darkslateblue;
 }
