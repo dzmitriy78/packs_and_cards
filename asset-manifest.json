@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.css": "/cards_RTK/static/css/main.0ed9ccf3.css",
+    "main.js": "/cards_RTK/static/js/main.16013f69.js",
+    "static/js/787.01da3d79.chunk.js": "/cards_RTK/static/js/787.01da3d79.chunk.js",
+    "static/media/primeicons.svg": "/cards_RTK/static/media/primeicons.c6e2053303524e39530c.svg",
+    "static/media/Education-Wallpaper.jpg": "/cards_RTK/static/media/Education-Wallpaper.88a67910a367c30a5811.jpg",
+    "static/media/user.png": "/cards_RTK/static/media/user.4ce1ce10ce20ffcefb44.png",
+    "static/media/primeicons.eot": "/cards_RTK/static/media/primeicons.7fc4d8e224d1ff1b9c62.eot",
+    "static/media/primeicons.woff": "/cards_RTK/static/media/primeicons.449aa8c65cdc5c2a8686.woff",
+    "static/media/primeicons.ttf": "/cards_RTK/static/media/primeicons.91bacab1f083f2795272.ttf",
+    "static/media/No_Cover.png": "/cards_RTK/static/media/No_Cover.aa4b62fe726cacce6e31.png",
+    "index.html": "/cards_RTK/index.html",
+    "main.0ed9ccf3.css.map": "/cards_RTK/static/css/main.0ed9ccf3.css.map",
+    "main.16013f69.js.map": "/cards_RTK/static/js/main.16013f69.js.map",
+    "787.01da3d79.chunk.js.map": "/cards_RTK/static/js/787.01da3d79.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.0ed9ccf3.css",
+    "static/js/main.16013f69.js"
+  ]
+}
